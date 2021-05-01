@@ -59,9 +59,11 @@ void set_attacking(Board &board, Move move, bool White) {
         int row = get_row(i);
         bool space_left = get_row(i - 1) == row;
         bool space_right = get_row(i + 1) == row;
+        bool space_move = in_board(get_row(i + pawn_factor));
 
-        if (space_left) {attacking[(i + pawn_factor) - 1] = 1;}
-        if (space_right) {attacking[(i + pawn_factor) + 1] = 1;}
+
+        if (space_left && space_move) {attacking[(i + pawn_factor) - 1] = 1;}
+        if (space_right && space_move) {attacking[(i + pawn_factor) + 1] = 1;}
     }
 
     // set attacking for knights

@@ -1,1 +1,1 @@
-Bitboard best_move(Board board, bool White, int depth);
+Move best_move(Board board, bool White, int depth);

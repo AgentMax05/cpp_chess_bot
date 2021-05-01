@@ -67,9 +67,10 @@ vector<Move> generate_moves(Board board, bool White) {
 
                 bool space_left = get_row(i - 1) == get_row(i);
                 bool space_right = get_row(i + 1) == get_row(i);
+                bool space_above = in_board(get_row(i - 8));
 
                 // eat up left
-                if (space_left) {
+                if (space_left && space_above) {
                     Move m_eat_left;
                     m_eat_left.type = PAWN_EAT;
                     Bitboard eat_left;
@@ -82,7 +83,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 }
 
                 // eat up right
-                if (space_right) {
+                if (space_right && space_above) {
                     Move m_eat_right;
                     m_eat_right.type = PAWN_EAT;
                     Bitboard eat_right;
@@ -131,9 +132,10 @@ vector<Move> generate_moves(Board board, bool White) {
 
                 bool space_left = get_row(i - 1) == get_row(i);
                 bool space_right = get_row(i + 1) == get_row(i);
+                bool space_below = in_board(get_row(i + 8));
 
                 // eat left
-                if (space_left) {
+                if (space_left && space_below) {
                     Move m_eat_left;
                     Bitboard eat_left;
                     eat_left[i] = 1;
@@ -145,7 +147,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 }
 
                 // eat right
-                if (space_right) {
+                if (space_right && space_below) {
                     Move m_eat_right;
                     Bitboard eat_right;
                     eat_right[i] = 1;

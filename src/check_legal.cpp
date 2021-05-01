@@ -57,3 +57,13 @@ bool check_legal(Board board, Move move, bool White) {
     return true;
 
 }
+
+void filter_moves(Board board, vector<Move> &moves, bool White) {
+    vector<Move> filtered = {};
+    for (int i = 0; i < moves.size(); i++) {
+        if (check_legal(board, moves[i], White)) {
+            filtered.push_back(moves[i]);
+        }
+    }
+    moves = filtered;
+}
