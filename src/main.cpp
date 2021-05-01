@@ -7,6 +7,7 @@
 #include "move_generation.h"
 #include "minimax.h"
 #include "check_legal.h"
+#include "eval.h"
 
 typedef std::bitset<64> Bitboard;
 using std::cout;
@@ -24,6 +25,7 @@ int main() {
     if (input != "default") {fen_notation = input;}
 
     Board board;
+    init_eval_center();
     board.init_board(fen_notation);
 
     Move move = best_move(board, true, 8);
