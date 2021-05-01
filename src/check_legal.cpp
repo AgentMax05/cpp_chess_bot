@@ -45,6 +45,15 @@ bool check_legal(Board board, Move move, bool White) {
         if (!queen_legal.none()) {return false;}
     }
 
+    // check if king is in check after move:
     set_attacking(board, move, White == false);
+
+    if (White) {
+        if ((board.kingW & board.attackB).none() == false) {return false;}
+    } else {
+        if ((board.kingB & board.attackW).none() == false) {return false;}
+    }
+
+    return true;
 
 }

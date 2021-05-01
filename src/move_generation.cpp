@@ -10,6 +10,13 @@ typedef std::bitset<64> Bitboard;
 using std::cout;
 using std::vector;
 
+bool in_board(int row) {
+    if (row >= 0 && row <= 7) {
+        return true;
+    }
+    return false;
+}
+
 int get_row(int index) {
     if (index < 0) {return -1;}
     return std::trunc(index / 8);

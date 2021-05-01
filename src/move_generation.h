@@ -20,3 +20,4 @@ const int QUEEN_STRAIGHT = 3;
 
 vector<Move> generate_moves(Board board, bool White);
 int get_row(int index);
+bool in_board(int row);

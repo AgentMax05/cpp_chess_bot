@@ -11,12 +11,12 @@ class Board {
 
     Bitboard pawnW, rookW, bishopW, knightW, queenW, kingW;
     Bitboard pawnB, rookB, bishopB, knightB, queenB, kingB;
-    Bitboard boardW, boardB;
+    Bitboard boardW, boardB, complete_board;
     Bitboard attackW, attackB;
 
     void init_board(string FEN);
     void update_boards();
-
+    void make_move(int piece, Bitboard move, bool White);
 };
 
 struct Move {

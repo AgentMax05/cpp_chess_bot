@@ -7,6 +7,13 @@
 typedef std::bitset<64> Bitboard;
 using std::string;
 
+const int pKing = 0;
+const int pQueen = 1;
+const int pRook = 2;
+const int pKnight = 3;
+const int pBishop = 4;
+const int pPawn = 5;
+
 bool is_lowercase(char input);
 bool is_num(char input);
 char to_lowercase(char input);
@@ -15,6 +22,26 @@ int char_to_int(char input);
 void Board::update_boards() {
     Board::boardW = Board::pawnW | Board::bishopW | Board::rookW | Board::knightW | Board::kingW | Board:: queenW;
     Board::boardB = Board::pawnB | Board::bishopB | Board::rookB | Board::knightB | Board::kingB | Board:: queenB;
+    Board::complete_board = Board::boardW | Board::boardB;
+}
+
+void Board::make_move(int piece, Bitboard move, bool White) {
+    if (White) {
+        if (piece == pPawn) {Board::pawnW = Board::pawnW ^ move;}
+        else if (piece == pRook) {Board::rookW = Board::rookW ^ move;}
+        else if (piece == pKnight) {Board::knightW = Board::knightW ^ move;}
+        else if (piece == pBishop) {Board::bishopW = Board::bishopW ^ move;}
+        else if (piece == pQueen) {Board::queenW = Board::queenW ^ move;}
+        else if (piece == pKing) {Board::kingW = Board::kingW ^ move;}
+    } else {
+        if (piece == pPawn) {Board::pawnB = Board::pawnB ^ move;}
+        else if (piece == pRook) {Board::rookB = Board::rookB ^ move;}
+        else if (piece == pKnight) {Board::knightB = Board::knightB ^ move;}
+        else if (piece == pBishop) {Board::bishopB = Board::bishopB ^ move;}
+        else if (piece == pQueen) {Board::queenB = Board::queenB ^ move;}
+        else if (piece == pKing) {Board::kingB = Board::kingB ^ move;}
+    }
+    update_boards();
 }
 
 void Board::init_board(string FEN) {
