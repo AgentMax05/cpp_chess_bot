@@ -25,6 +25,12 @@ void init_eval_center() {
     }
 }
 
+double attacked_squares(Board board) {
+    double white = board.attackW.count();
+    double black = -1 * board.attackB.count();
+    return white + black;
+}
+
 double king_check(Board board) {
     double white = 0;
     double black = 0;
@@ -89,6 +95,7 @@ double value_board(Board board) {
     score += stacked_pawns(board);
     score += king_check(board);
     score += center_control(board);
+    score += attacked_squares(board);
 
     return score;
 }
