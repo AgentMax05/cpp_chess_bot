@@ -46,13 +46,16 @@ bool check_legal(Board board, Move move, bool White) {
     }
 
     // check if king is in check after move:
-    set_attacking(board, move, White == false);
+    // set_attacking(board, move, White == false);
+
+    // cout << board.attackW.none() << " " << board.attackB.none() << "\n";
 
     if (White) {
         if ((board.kingW & board.attackB).none() == false) {return false;}
     } else {
         if ((board.kingB & board.attackW).none() == false) {return false;}
     }
+
 
     return true;
 

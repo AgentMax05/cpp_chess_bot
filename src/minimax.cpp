@@ -3,6 +3,7 @@
 #include "eval.h"
 #include "minimax.h"
 #include "check_legal.h"
+#include "set_attacking.h"
 
 int nodes = 0;
 
@@ -10,6 +11,10 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     nodes++;
     // make move:
     board.make_move(move.piece, move.move, White);
+    board.attackW.reset();
+    board.attackB.reset();
+    set_attacking(board, move, White);
+    set_attacking(board, move, White == false);
 
     if (depth == 0) {
         return value_board(board);
