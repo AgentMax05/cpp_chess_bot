@@ -48,7 +48,7 @@ void set_attacking(Board &board, Move move, bool White) {
         
         board.update_boards();
         friendly_board = board.boardW;
-        enemy_board = board.boardW;
+        enemy_board = board.boardB;
     }
 
     full_board = enemy_board | friendly_board;
@@ -92,13 +92,13 @@ void set_attacking(Board &board, Move move, bool White) {
         // down right
         if (double_below && space_right) {attacking[i + 16 + 1] = 1;}
         // left up
-        if (double_left && space_above) {attacking[i - 1 - 8] = 1;}
+        if (double_left && space_above) {attacking[i - 2 - 8] = 1;}
         // left down
-        if (double_left && space_below) {attacking[i - 1 + 8] = 1;}
+        if (double_left && space_below) {attacking[i - 2 + 8] = 1;}
         // right up
-        if (double_right && space_above) {attacking[i + 1 - 8] = 1;}
+        if (double_right && space_above) {attacking[i + 2 - 8] = 1;}
         // right down
-        if (double_right && space_below) {attacking[i + 1 + 8] = 1;}
+        if (double_right && space_below) {attacking[i + 2 + 8] = 1;}
 
     }
 
