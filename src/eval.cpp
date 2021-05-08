@@ -90,7 +90,7 @@ double piece_value(Board board) {
 
 
 double value_board(Board board) {
-    double score;
+    double score = 0;
     score += piece_value(board);
     score += stacked_pawns(board);
     score += king_check(board);
