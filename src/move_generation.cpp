@@ -53,7 +53,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 moves.push_back(new_move);
 
                 // check if pawn can move up 2
-                if (48 <= i <= 55) {
+                if (48 <= i && i <= 55) {
                     Move new_double;
                     Bitboard double_move;
                     double_move[i] = 1;
@@ -577,7 +577,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.move = move_board;
                     new_move.piece = pQueen;
                     new_move.legal_check = legal_check;
-                    new_move.type == QUEEN_STRAIGHT;
+                    new_move.type = QUEEN_STRAIGHT;
 
                     moves.push_back(new_move);
                     legal_check.reset();
@@ -608,7 +608,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.move = move_board;
                     new_move.piece = pQueen;
                     new_move.legal_check = legal_check;
-                    new_move.type == QUEEN_STRAIGHT;
+                    new_move.type = QUEEN_STRAIGHT;
 
                     moves.push_back(new_move);
                     legal_check.reset();
