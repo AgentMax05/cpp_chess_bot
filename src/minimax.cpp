@@ -72,7 +72,7 @@ Move best_move(Board board, bool White, int depth) {
         Move best;
 
         for (int i = 0; i < moves.size(); i++) {
-            double score = minimax(board, moves[i], false, depth - 1, -999999, 999999);
+            double score = minimax(board, moves[i], true, depth - 1, -999999, 999999);
             if (score > highest) {
                 highest = score;
                 best = moves[i];
@@ -86,7 +86,7 @@ Move best_move(Board board, bool White, int depth) {
         Move best;
 
         for (int i = 0; i < moves.size(); i++) {
-            double score = minimax(board, moves[i], true, depth - 1, -999999, 999999);
+            double score = minimax(board, moves[i], false, depth - 1, -999999, 999999);
             if (score < lowest) {
                 lowest = score;
                 best = moves[i];
