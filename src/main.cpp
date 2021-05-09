@@ -40,6 +40,7 @@ int main() {
     // cout << "\n----------------------------------\n";
     // display_board(board.attackB);
 
+    // search for best move with given depth
     Move move = best_move(board, true, 8);
     display_board(move.move);
     

@@ -1,1 +1,1 @@
-void set_attacking(Board &board, Move move, bool White);
+void set_attacking(Board &board);
