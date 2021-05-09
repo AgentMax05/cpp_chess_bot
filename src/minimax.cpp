@@ -11,17 +11,15 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     nodes++;
     // make move:
     board.make_move(move.piece, move.move, White);
-    board.attackW.reset();
-    board.attackB.reset();
-    set_attacking(board, move, White);
-    set_attacking(board, move, White == false);
+    set_attacking(board);
 
     if (depth == 0) {
         return value_board(board);
     }
 
+    // generate moves for other side (White == false)
     vector<Move> moves = generate_moves(board, White == false);
-    filter_moves(board, moves, White);
+    filter_moves(board, moves, White == false);
 
     if (White) {
         double highest = -999999;
@@ -66,6 +64,8 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
 Move best_move(Board board, bool White, int depth) {
     vector<Move> moves = generate_moves(board, White);
     filter_moves(board, moves, White);
+
+    nodes = 0;
 
     if (White) {
         double highest = -999999;
