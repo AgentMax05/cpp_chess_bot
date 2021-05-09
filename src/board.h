@@ -17,6 +17,8 @@ class Board {
     void init_board(string FEN);
     void update_boards();
     void make_move(int piece, Bitboard move, bool White);
+
+    string getDisplayString();
 };
 
 struct Move {

@@ -29,6 +29,9 @@ int main() {
     Board board;
     init_eval_center();
     board.init_board(fen_notation);
+    
+    // display the representation of the board we loaded
+    std::cerr << board.getDisplayString() << "\n";
 
     // set_attacking(board, Move(), false);
     // set_attacking(board, Move(), true);
@@ -39,7 +42,12 @@ int main() {
 
     Move move = best_move(board, true, 8);
     display_board(move.move);
+    
     cout << "\n" << move.piece;
+    
+    // now make that move so we can display the updated board
+    board.make_move(move.piece, move.move, true);
+    std::cerr << "\n" << board.getDisplayString() << "\n";
 
     // std::vector<Move> moves = generate_moves(board, true);
     // filter_moves(board, moves, true);
