@@ -5,7 +5,7 @@
 #include "board.h"
 
 typedef std::bitset<64> Bitboard;
-using std::string;
+using namespace std;
 
 const int pKing = 0;
 const int pQueen = 1;
@@ -24,6 +24,65 @@ void Board::update_boards() {
     Board::boardB = Board::pawnB | Board::bishopB | Board::rookB | Board::knightB | Board::kingB | Board:: queenB;
     Board::complete_board = Board::boardW | Board::boardB;
 }
+
+/**
+ Displays a human-readable board
+ */
+string Board::getDisplayString() {
+    vector<pair<string, Bitboard*>> boards = {
+        pair<string, Bitboard*>("♙", &pawnW),
+        pair<string, Bitboard*>("♔", &kingW),
+        pair<string, Bitboard*>("♕", &queenW),
+        pair<string, Bitboard*>("♖", &rookW),
+        pair<string, Bitboard*>("♗", &bishopW),
+        pair<string, Bitboard*>("♘", &knightW),
+        pair<string, Bitboard*>("♟︎", &pawnB),
+        pair<string, Bitboard*>("♚", &kingB),
+        pair<string, Bitboard*>("♛", &queenB),
+        pair<string, Bitboard*>("♜", &rookB),
+        pair<string, Bitboard*>("♝", &bishopB),
+        pair<string, Bitboard*>("♞", &knightB)
+    };
+    
+    // initialize the empty board
+    vector<vector<string>> displayBoard;
+    for(int i=0; i<8; i++) {
+        vector<string> row;
+        
+        for(int j=0; j<8; j++) {
+            row.push_back("_");
+        }
+        displayBoard.push_back(row);
+    }
+    
+    // fill in pieces
+    for(pair<string, Bitboard*> item: boards) {
+        string marker = item.first;
+        Bitboard board = *item.second;
+        
+        for(int i=0; i<board.size(); i++) {
+            if(board[i] == 0) continue;
+            
+            int row = i / 8;
+            int col = i % 8;
+            displayBoard[row][col] = marker;
+        }
+    }
+    
+    // combine into a string
+    string display = "";
+    for(int row=0; row<8; row++) {
+        for(int col=0; col<8; col++) {
+            display += displayBoard[row][col];
+        }
+        if(row != 7) {
+            display += "\n";
+        }
+    }
+     
+    return display;
+}
+
 
 void Board::make_move(int piece, Bitboard move, bool White) {
     if (White) {
