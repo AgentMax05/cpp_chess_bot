@@ -86,6 +86,19 @@ string Board::getDisplayString() {
 
 void Board::make_move(int piece, Bitboard move, bool White) {
     if (White) {
+
+        // checks if a piece is being eaten
+        if (!(move & Board::boardB).none()) {
+            Bitboard eaten = move & Board::boardB;
+
+            // removes piece from board if board has piece
+            Board::pawnB = Board::pawnB ^ (eaten & Board::pawnB);
+            Board::rookB = Board::rookB ^ (eaten & Board::rookB);
+            Board::bishopB = Board::bishopB ^ (eaten & Board::bishopB);
+            Board::knightB = Board::knightB ^ (eaten & Board::knightB);
+            Board::queenB = Board::queenB ^ (eaten & Board::queenB);
+        } 
+
         if (piece == pPawn) {Board::pawnW = Board::pawnW ^ move;}
         else if (piece == pRook) {Board::rookW = Board::rookW ^ move;}
         else if (piece == pKnight) {Board::knightW = Board::knightW ^ move;}
@@ -93,6 +106,19 @@ void Board::make_move(int piece, Bitboard move, bool White) {
         else if (piece == pQueen) {Board::queenW = Board::queenW ^ move;}
         else if (piece == pKing) {Board::kingW = Board::kingW ^ move;}
     } else {
+
+        // checks if a piece is being eaten
+        if (!(move & Board::boardW).none()) {
+            Bitboard eaten = move & Board::boardW;
+
+            // removes piece from board if board has piece
+            Board::pawnW = Board::pawnW ^ (eaten & Board::pawnW);
+            Board::rookW = Board::rookW ^ (eaten & Board::rookW);
+            Board::bishopW = Board::bishopW ^ (eaten & Board::bishopW);
+            Board::knightW = Board::knightW ^ (eaten & Board::knightW);
+            Board::queenW = Board::queenW ^ (eaten & Board::queenW);
+        }
+
         if (piece == pPawn) {Board::pawnB = Board::pawnB ^ move;}
         else if (piece == pRook) {Board::rookB = Board::rookB ^ move;}
         else if (piece == pKnight) {Board::knightB = Board::knightB ^ move;}
