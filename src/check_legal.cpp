@@ -14,8 +14,14 @@ bool check_legal(Board board, Move move, bool White) {
 
     // check for moving to occupied square
     Bitboard overlap = friendly_board & move.move;
-    if (overlap.count() != 1) {return false;}
 
+    // if piece is a pawn and not taking make sure pawn can't take forwards
+    if (move.piece == pPawn && move.type != PAWN_EAT) {
+        overlap = (friendly_board | enemy_board) & move.move;
+    }
+
+    if (overlap.count() != 1) {return false;}
+    
     // check pawn moves
     if (move.piece == pPawn) {
 
