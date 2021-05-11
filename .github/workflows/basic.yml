@@ -1,0 +1,22 @@
+name: basic
+on: [push]
+
+jobs:
+  job:
+    name: ${{ matrix.os }}-basic
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - uses: lukka/get-cmake@latest
+      - name: test
+        run: |
+          cmake -S . -B build
+          cmake --build build
+          cd build && ctest
+        shell: bash

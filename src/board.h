@@ -27,3 +27,13 @@ struct Move {
     Bitboard move;
     Bitboard legal_check;
 };
+
+#if !defined(BOARD_CONSTANTS_H)
+#define BOARD_CONSTANTS_H
+
+namespace BoardConstants {
+    const string DefaultFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+}
+
+
+#endif 
