@@ -2,6 +2,15 @@
 #include "move_generation.h"
 #include "set_attacking.h"
 
+bool king_check(Board board, bool isWhite) {
+    if (isWhite) {
+        if ((board.kingW & board.attackB).none() == false) {return true;}
+    } else {
+        if ((board.kingB & board.attackW).none() == false) {return true;}
+    }
+    return false;
+}
+
 bool check_legal(Board board, Move move, bool White) {
     Bitboard friendly_board, enemy_board;
     if (White) {
@@ -51,20 +60,12 @@ bool check_legal(Board board, Move move, bool White) {
         if (!queen_legal.none()) {return false;}
     }
 
-    // check if king is in check after move:
-    // set_attacking(board, move, White == false);
-
-    // cout << board.attackW.none() << " " << board.attackB.none() << "\n";
-
-    if (White) {
-        if ((board.kingW & board.attackB).none() == false) {return false;}
-    } else {
-        if ((board.kingB & board.attackW).none() == false) {return false;}
-    }
-
+    // make move, set attacking, and check if king is in check:
+    board.make_move(move.piece, move.move, White);
+    set_attacking(board);
+    if (king_check(board, White)) {return false;}
 
     return true;
-
 }
 
 void filter_moves(Board board, vector<Move> &moves, bool White) {
