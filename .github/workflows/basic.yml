@@ -29,13 +29,13 @@ jobs:
       - name: Run program to see results
         run: |
           cd build
-          ls -alh .
 
           echo "Show help"
-          ./chess.exe -h || true
+          ./chess.exe -h
 
           echo "Show the default board using ASCII display"
           ./chess.exe -f default -b ascii
 
           echo "Show the default board using Unicode display"
           ./chess.exe -f default -b unicode
+        continue-on-error: true
