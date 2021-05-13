@@ -20,14 +20,22 @@ jobs:
           cmake --build build
           cd build && ctest
         shell: bash
+      - name: Copy the program to chess.exe
+        run: |
+          cd build
+          ls -alh .
+          cp chess chess.exe
+        if: ${{ matrix.os != 'windows-latest' }}
       - name: Run program to see results
         run: |
           cd build
+          ls -alh .
+
           echo "Show help"
-          ./chess -h || true
+          ./chess.exe -h || true
 
           echo "Show the default board using ASCII display"
-          ./chess -f default -b ascii
+          ./chess.exe -f default -b ascii
 
           echo "Show the default board using Unicode display"
-          ./chess -f default -b unicode
+          ./chess.exe -f default -b unicode
