@@ -26,6 +26,11 @@ jobs:
           ls -alh .
           cp chess chess.exe
         if: ${{ matrix.os != 'windows-latest' }}
+      - name: List directory on windows
+        run: |
+          cd build
+          Get-ChildItem -Recurse
+        if: ${{ matrix.os == 'windows-latest' }}
       - name: Show program help
         run: |
           cd build
