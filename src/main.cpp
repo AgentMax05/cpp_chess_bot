@@ -25,8 +25,13 @@ typedef struct {
     string fen;
 } ProgramOptions;
 
-void showHelp() {
-    cout << "Help!\n";
+void showHelp(char* programName) {
+    cout << programName << " [options]\n";
+    cout << "OPTIONS\n" 
+        << "\t-h                   Shows help message\n" 
+        << "\t-f <default|FEN>     Enter a board layout in FEN-notation. Use default for the initial board layout.\n"
+        << "\t-b <unicode|ascii>   Force a board representation. Otherwise this is determined by OS."
+        << "\n";
 }
 
 ProgramOptions getProgramOptions(int argc, char** argv) {
@@ -71,7 +76,7 @@ ProgramOptions getProgramOptions(int argc, char** argv) {
 int main(int argc, char** argv) {
     ProgramOptions options = getProgramOptions(argc, argv);
     if(options.showHelp) {
-        showHelp();
+        showHelp(argv[0]);
         return 1;
     }
     

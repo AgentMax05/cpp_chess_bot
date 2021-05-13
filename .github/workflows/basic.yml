@@ -22,5 +22,12 @@ jobs:
         shell: bash
       - name: Run program to see results
         run: |
-          build/chess -f default -b ascii
-          build/chess -f default -b unicode
+          cd build
+          echo "Show help"
+          ./chess -h
+
+          echo "Show the default board using ASCII display"
+          ./chess -f default -b ascii
+
+          echo "Show the default board using Unicode display"
+          ./chess -f default -b unicode
