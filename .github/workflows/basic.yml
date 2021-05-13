@@ -26,16 +26,19 @@ jobs:
           ls -alh .
           cp chess chess.exe
         if: ${{ matrix.os != 'windows-latest' }}
-      - name: Run program to see results
+      - name: Show program help
         run: |
           cd build
 
           echo "Show help"
           ./chess.exe -h
+        continue-on-error: true
+      - name: Run program to see results
+        run: |
+          cd build
 
           echo "Show the default board using ASCII display"
           ./chess.exe -f default -b ascii
 
           echo "Show the default board using Unicode display"
           ./chess.exe -f default -b unicode
-        continue-on-error: true
