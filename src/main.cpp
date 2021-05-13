@@ -2,7 +2,11 @@
 #include <string>
 #include <vector>
 #include <bitset>
+#ifdef _WIN32
+#include "windows_getopt.h"
+#else
 #include <unistd.h>
+#endif
 #include <cstring>
 
 #include "board.h"
