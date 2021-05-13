@@ -12,7 +12,7 @@ void set_attacking(Board &board) {
     board.attackB.reset();
 
     // cycles through 0 and 1, 0 being black (false), 1 being white (true)
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         bool White = i;
 
         if (White) {
@@ -257,6 +257,36 @@ void set_attacking(Board &board) {
                 x = x + 8 - 1;
                 x_value--;
             }
+
+        }
+
+        // set attacking for king
+        for (int i = 0; i < king.size(); i++) {
+            if (king[i] != 1) {continue;}
+
+            int row = get_row(i);
+
+            bool space_left = get_row(i - 1) == row;
+            bool space_right = get_row(i + 1) == row;
+            bool space_above = in_board(row - 1);
+            bool space_below = in_board(row + 1);
+
+            // left
+            if (space_left) {attacking[i - 1] = 1;}
+            // right
+            if (space_right) {attacking[i + 1] = 1;}
+            // down
+            if (space_below) {attacking[i + 8] = 1;}
+            // up
+            if (space_above) {attacking[i - 8] = 1;}
+            // left down
+            if (space_left && space_below) {attacking[i - 1 + 8] = 1;}
+            // left up
+            if (space_left && space_above) {attacking[i - 1 - 8] = 1;}
+            // right down
+            if (space_right && space_below) {attacking[i + 1 + 8] = 1;}
+            // right up
+            if (space_right && space_above) {attacking[i + 1 - 8] = 1;}
 
         }
 
