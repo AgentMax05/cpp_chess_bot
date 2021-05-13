@@ -3,6 +3,7 @@
 #include <vector>
 #include <bitset>
 #include <unistd.h>
+#include <cstring>
 
 #include "board.h"
 #include "move_generation.h"
