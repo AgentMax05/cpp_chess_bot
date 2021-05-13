@@ -20,3 +20,7 @@ jobs:
           cmake --build build
           cd build && ctest
         shell: bash
+      - name: Run program to see results
+        run: |
+          build/chess -f default -b ascii
+          build/chess -f default -b unicode

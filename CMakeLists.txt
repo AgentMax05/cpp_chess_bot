@@ -17,6 +17,13 @@ enable_testing()
 
 include_directories(src)
 
+file(GLOB SRC_FILES src/*.cpp)
+
+add_executable(
+  chess
+  ${SRC_FILES}
+)
+
 add_executable(
   eval_test
   tests/eval_test.cpp
@@ -33,6 +40,14 @@ add_executable(
   src/misc_funcs.cpp
   src/move_generation.cpp
 )
+add_executable(
+  board_test
+  tests/board_test.cpp
+  src/board.cpp
+  src/eval.cpp
+  src/BoardRenderer.cpp
+  src/misc_funcs.cpp
+)
 target_link_libraries(
   eval_test
   gtest_main
@@ -41,6 +56,11 @@ target_link_libraries(
   move_generation_test
   gtest_main
 )
+target_link_libraries(
+  board_test
+  gtest_main
+)
 include(GoogleTest)
 gtest_discover_tests(eval_test)
 gtest_discover_tests(move_generation_test)
+gtest_discover_tests(board_test)

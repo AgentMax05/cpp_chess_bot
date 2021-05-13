@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <string>
 #include <vector>
 #include <bitset>
@@ -37,3 +40,5 @@ namespace BoardConstants {
 
 
 #endif 
+
+#endif
