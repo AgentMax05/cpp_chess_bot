@@ -223,7 +223,5 @@ void Board::init_board(string FEN) {
         }
     }
 
-    Board::boardW = Board::pawnW | Board::rookW | Board::bishopW | Board::knightW | Board::queenW | Board::kingW;
-    Board::boardB = Board::pawnB | Board::rookB | Board::bishopB | Board::knightB | Board::queenB | Board::kingB;
-
+    update_boards();
 }

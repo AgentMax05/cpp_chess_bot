@@ -1,11 +1,14 @@
 #include "board.h"
-#include "move_generation.h"
 #include "eval.h"
+#include "move_generation.h"
 #include "minimax.h"
 #include "check_legal.h"
 #include "set_attacking.h"
 
 int nodes = 0;
+
+double CHECKMATE = 999999;
+double STALEMATE = 0;
 
 double minimax(Board board, Move move, bool White, int depth, double alpha, double beta) {
     nodes++;
@@ -20,6 +23,19 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     // generate moves for other side (White == false)
     vector<Move> moves = generate_moves(board, White == false);
     filter_moves(board, moves, White == false);
+
+    // check if king is in checkmate or stalemate
+    if (moves.size() == 0) {
+        if (king_check(board, White == false)) {
+            if (White) {
+                return CHECKMATE;
+            } else {
+                return (-1 * CHECKMATE);
+            }
+        } else {
+            return STALEMATE;
+        }
+    }
 
     if (White) {
         double highest = -999999;
