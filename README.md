@@ -7,7 +7,7 @@
 `chess.exe [options]`
 
 - `-h` Shows the available options
-- `-f` Allows non-interactive FEN entry
+- `-f <FEN|default>` Allows non-interactive FEN entry
 - `-b <unicode|ascii>` Allows forcing the board display mode 
 
 # Testing

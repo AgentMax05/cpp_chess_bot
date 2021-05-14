@@ -1,10 +1,3 @@
-//
-//  BoardRenderer.hpp
-//  chess
-//
-//  Created by Jamie Ly on 5/12/21.
-//
-
 #include <string>
 #include "board.h"
 
