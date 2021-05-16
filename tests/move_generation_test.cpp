@@ -10,7 +10,7 @@ TEST(MoveGenerationTest, CountGeneratedMoves) {
   board.init_board(BoardConstants::DefaultFEN);
   bool isWhite = true;
   vector<Move> moves = generate_moves(board, isWhite);
-  int count = moves.size();
+  size_t count = moves.size();
   EXPECT_EQ(count, 104);
 }
 

@@ -25,7 +25,7 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
         return beta;
     }
 
-    if (depth == 0) {
+    if (depth <= 0) {
         return value_board(board);
     }
 
