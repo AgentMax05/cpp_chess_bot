@@ -16,6 +16,14 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     board.make_move(move.piece, move.move, White);
     set_attacking(board);
 
+    // check if king is in check (check is here instead of check_legal to improve performance):
+    if (king_check(board, White)) {
+        if (White) {
+            return alpha;
+        }
+        return beta;
+    }
+
     if (depth == 0) {
         return value_board(board);
     }

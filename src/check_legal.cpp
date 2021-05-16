@@ -60,11 +60,6 @@ bool check_legal(Board board, Move move, bool White) {
         if (!queen_legal.none()) {return false;}
     }
 
-    // make move, set attacking, and check if king is in check:
-    board.make_move(move.piece, move.move, White);
-    set_attacking(board);
-    if (king_check(board, White)) {return false;}
-
     return true;
 }
 
