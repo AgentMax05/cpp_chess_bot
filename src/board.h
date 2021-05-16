@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <string>
 #include <vector>
 #include <bitset>
@@ -17,8 +20,6 @@ class Board {
     void init_board(string FEN);
     void update_boards();
     void make_move(int piece, Bitboard move, bool White);
-
-    string getDisplayString();
 };
 
 struct Move {
@@ -37,3 +38,5 @@ namespace BoardConstants {
 
 
 #endif 
+
+#endif

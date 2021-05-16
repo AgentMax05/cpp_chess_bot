@@ -26,8 +26,8 @@ void init_eval_center() {
 }
 
 double attacked_squares(Board board) {
-    double white = board.attackW.count();
-    double black = -1 * board.attackB.count();
+    double white = static_cast<double>(board.attackW.count());
+    double black = static_cast<double>(-1 * board.attackB.count());
     return white + black;
 }
 

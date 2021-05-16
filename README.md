@@ -2,6 +2,14 @@
 
 <h3 align=center>A simple chess engine.</h3>
 
+# Usage
+
+`chess.exe [options]`
+
+- `-h` Shows the available options
+- `-f <FEN|default>` Allows non-interactive FEN entry
+- `-b <unicode|ascii>` Allows forcing the board display mode 
+
 # Testing
 
 ## Setup CMake
