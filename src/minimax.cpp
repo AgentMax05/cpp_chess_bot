@@ -4,10 +4,11 @@
 #include "minimax.h"
 #include "check_legal.h"
 #include "set_attacking.h"
+#include <float.h>
 
 int nodes = 0;
 
-double CHECKMATE = 999999;
+double CHECKMATE = DBL_MAX;
 double STALEMATE = 0;
 
 double minimax(Board board, Move move, bool White, int depth, double alpha, double beta) {
@@ -46,7 +47,7 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     }
 
     if (White) {
-        double highest = -999999;
+        double highest = -DBL_MAX;
         Move best_move;
 
         for (int i = 0; i < moves.size(); i++) {
@@ -64,7 +65,7 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
         }
         return highest;
     } else {
-        double lowest = 999999;
+        double lowest = DBL_MAX;
         Move best_move;
 
         for (int i = 0; i < moves.size(); i++) {
@@ -92,11 +93,11 @@ Move best_move(Board board, bool White, int depth) {
     nodes = 0;
 
     if (White) {
-        double highest = -999999;
+        double highest = -DBL_MAX;
         Move best;
 
         for (int i = 0; i < moves.size(); i++) {
-            double score = minimax(board, moves[i], true, depth - 1, -999999, 999999);
+            double score = minimax(board, moves[i], true, depth - 1, -DBL_MAX, DBL_MAX);
             if (score > highest) {
                 highest = score;
                 best = moves[i];
@@ -106,11 +107,11 @@ Move best_move(Board board, bool White, int depth) {
         return best;
 
     } else {
-        double lowest = 999999;
+        double lowest = DBL_MAX;
         Move best;
 
         for (int i = 0; i < moves.size(); i++) {
-            double score = minimax(board, moves[i], false, depth - 1, -999999, 999999);
+            double score = minimax(board, moves[i], false, depth - 1, -DBL_MAX, DBL_MAX);
             if (score < lowest) {
                 lowest = score;
                 best = moves[i];
