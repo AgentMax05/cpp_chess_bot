@@ -25,42 +25,23 @@ add_executable(
 )
 
 add_executable(
-  eval_test
+  all_tests
   tests/eval_test.cpp
-  src/board.cpp
-  src/eval.cpp
-  src/misc_funcs.cpp
-  src/move_generation.cpp
-)
-add_executable(
-  move_generation_test
   tests/move_generation_test.cpp
-  src/board.cpp
-  src/eval.cpp
-  src/misc_funcs.cpp
-  src/move_generation.cpp
-)
-add_executable(
-  board_test
+  tests/minimax_test.cpp
   tests/board_test.cpp
   src/board.cpp
   src/eval.cpp
-  src/BoardRenderer.cpp
   src/misc_funcs.cpp
+  src/move_generation.cpp
+  src/minimax.cpp
+  src/check_legal.cpp
+  src/set_attacking.cpp
+  src/BoardRenderer.cpp
 )
 target_link_libraries(
-  eval_test
-  gtest_main
-)
-target_link_libraries(
-  move_generation_test
-  gtest_main
-)
-target_link_libraries(
-  board_test
+  all_tests
   gtest_main
 )
 include(GoogleTest)
-gtest_discover_tests(eval_test)
-gtest_discover_tests(move_generation_test)
-gtest_discover_tests(board_test)
+gtest_discover_tests(all_tests)

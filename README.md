@@ -8,7 +8,9 @@
 
 - `-h` Shows the available options
 - `-f <FEN|default>` Allows non-interactive FEN entry
-- `-b <unicode|ascii>` Allows forcing the board display mode 
+- `-b <unicode|ascii>` Allows forcing the board display mode. Defaults to Ascii on Windows and Unicode elsewhere.
+- `-c <white|black>` Allows setting the color used. Defaults to white.
+- `-d <depth>` Allows setting the move search depth. Defaults to 8.
 
 # Testing
 

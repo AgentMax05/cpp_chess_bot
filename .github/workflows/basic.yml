@@ -44,7 +44,7 @@ jobs:
           cd build
 
           echo "Show the default board using ASCII display"
-          ./chess.exe -f default -b ascii
+          ./chess.exe -f default -b ascii -d3
 
           echo "Show the default board using Unicode display"
-          ./chess.exe -f default -b unicode
+          ./chess.exe -f default -b unicode -d3
