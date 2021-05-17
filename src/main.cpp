@@ -145,13 +145,13 @@ int main(int argc, char** argv) {
     std::cerr << renderer->render(&board) << "\n";
 
     // search for best move with given depth
-    Move move = best_move(board, true, options.depth);
+    Move move = best_move(board, options.useWhite, options.depth);
     display_board(move.move);
     
     // cout << "\n" << move.piece;
     
     // now make that move so we can display the updated board
-    board.make_move(move.piece, move.move, true);
+    board.make_move(move.piece, move.move, options.useWhite);
 
     std::cerr << "\n" << renderer->render(&board) << "\n";
 
