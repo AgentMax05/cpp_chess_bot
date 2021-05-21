@@ -37,11 +37,14 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
     if (moves.size() == 0) {
         if (king_check(board, White == false)) {
             if (White) {
+                // return CHECKMATE for white meaning black has no legal moves
                 return CHECKMATE;
             } else {
-                return (-1 * CHECKMATE);
+                // return CHECKMATE for black meaning white has no legal moves
+                return (-CHECKMATE);
             }
         } else {
+            // if other side has no moves but is not in check, return STALEMATE (draw)
             return STALEMATE;
         }
     }
@@ -55,15 +58,16 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
             if (score > highest) {
                 highest = score;
                 best_move = moves[i];
-                if (score > alpha) {
-                    alpha = score;
-                }
+            }
+            if (score > alpha) {
+                alpha = score;
             }
             if (beta <= alpha) {
                 return highest;
             }
         }
         return highest;
+
     } else {
         double lowest = DBL_MAX;
         Move best_move;
@@ -73,9 +77,9 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
             if (score < lowest) {
                 lowest = score;
                 best_move = moves[i];
-                if (lowest < beta) {
-                    beta = lowest;
-                }
+            }
+            if (lowest < beta) {
+                beta = lowest;
             }
             if (beta <= alpha) {
                 return lowest;

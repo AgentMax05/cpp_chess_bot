@@ -140,6 +140,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     Bitboard eat_left;
                     eat_left[i] = 1;
                     eat_left[i + 8 - 1] = 1;
+                    m_eat_left.type = PAWN_EAT;
 
                     m_eat_left.move = eat_left;
                     m_eat_left.piece = pPawn;
@@ -152,6 +153,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     Bitboard eat_right;
                     eat_right[i] = 1;
                     eat_right[i + 8 + 1] = 1;
+                    m_eat_right.type = PAWN_EAT;
 
                     m_eat_right.move = eat_right;
                     m_eat_right.piece = pPawn;
