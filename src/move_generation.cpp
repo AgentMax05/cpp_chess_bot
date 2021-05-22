@@ -22,22 +22,8 @@ int get_row(int index) {
     return std::trunc(index / 8);
 }
 
-// generate all moves for certain side
-vector<Move> generate_moves(Board board, bool White) {
-    vector<Move> moves = {};
-
-    // setting boards based on color
-    // pawns need separate move generations
-
-    Bitboard knight, rook, bishop, king, queen;
-
+void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
     if (White) {
-        knight = board.knightW;
-        rook = board.rookW;
-        bishop = board.bishopW;
-        king = board.kingW;
-        queen = board.queenW;
-
         // create all moves for pawns
         for (int i = 0; i < board.pawnW.size(); i++) {
             int current = board.pawnW[i];
@@ -50,7 +36,7 @@ vector<Move> generate_moves(Board board, bool White) {
 
                 new_move.move = move_board;
                 new_move.piece = pPawn;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
 
                 // check if pawn can move up 2
                 if (48 <= i && i <= 55) {
@@ -67,7 +53,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_double.piece = pPawn;
                     new_double.type = PAWN_DOUBLE;
                     new_double.legal_check = legal_check;
-                    moves.push_back(new_double);
+                    moves->push_back(new_double);
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -84,7 +70,7 @@ vector<Move> generate_moves(Board board, bool White) {
 
                     m_eat_left.move = eat_left;
                     m_eat_left.piece = pPawn;
-                    moves.push_back(m_eat_left);
+                    moves->push_back(m_eat_left);
                 }
 
                 // eat up right
@@ -97,19 +83,13 @@ vector<Move> generate_moves(Board board, bool White) {
 
                     m_eat_right.move = eat_right;
                     m_eat_right.piece = pPawn;
-                    moves.push_back(m_eat_right);
+                    moves->push_back(m_eat_right);
                 }
 
             }
         }
     
     } else {
-        knight = board.knightB;
-        rook = board.rookB;
-        bishop = board.bishopB;
-        king = board.kingB;
-        queen = board.queenB;
-
         // create all moves for black pawns
         for (int i = 0; i < board.pawnB.size(); i++) {
             int current = board.pawnB[i];
@@ -121,7 +101,7 @@ vector<Move> generate_moves(Board board, bool White) {
 
                 new_move.move = move_board;
                 new_move.piece = pPawn;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
 
                 // move down 2
                 if (get_row(i) == 1) {
@@ -137,7 +117,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_double.piece = pPawn;
                     new_double.type = PAWN_DOUBLE;
                     new_double.legal_check = legal_check;
-                    moves.push_back(new_double);
+                    moves->push_back(new_double);
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -154,7 +134,7 @@ vector<Move> generate_moves(Board board, bool White) {
 
                     m_eat_left.move = eat_left;
                     m_eat_left.piece = pPawn;
-                    moves.push_back(m_eat_left);
+                    moves->push_back(m_eat_left);
                 }
 
                 // eat right
@@ -167,13 +147,24 @@ vector<Move> generate_moves(Board board, bool White) {
 
                     m_eat_right.move = eat_right;
                     m_eat_right.piece = pPawn;
-                    moves.push_back(m_eat_right);
+                    moves->push_back(m_eat_right);
                 }
 
             }
         }
     
     }
+}
+
+// generate all moves for certain side
+vector<Move> generate_moves(Board board, bool White) {
+    vector<Move> moves = {};
+
+    // setting boards based on color
+
+    generate_moves_for_pawn(&moves, board, White);
+    
+    Bitboard knight = White ? board.knightW : board.knightB;
 
     // create all moves for knights
     for (int i = 0; i < knight.size(); i++) {
@@ -285,6 +276,7 @@ vector<Move> generate_moves(Board board, bool White) {
         }
     }
 
+    Bitboard king = White ? board.kingW : board.kingB;
     // create all moves for king
     for (int i = 0; i < king.size(); i++) {
         int current = king[i];
@@ -388,6 +380,7 @@ vector<Move> generate_moves(Board board, bool White) {
         }
     }
 
+    Bitboard rook = White ? board.rookW : board.rookB;
     // create all moves for rook
     for (int i = 0; i < rook.size(); i++) {
         int current = rook[i];
@@ -453,6 +446,7 @@ vector<Move> generate_moves(Board board, bool White) {
         }
     }
 
+    Bitboard bishop = White ? board.bishopW : board.bishopB;
     // create all moves for bishop
     for (int i = 0; i < bishop.size(); i++) {
         int current = bishop[i];
@@ -558,6 +552,7 @@ vector<Move> generate_moves(Board board, bool White) {
         }
     }
 
+    Bitboard queen = White ? board.queenW : board.queenB;
     // create all moves for queen
     for (int i = 0; i < queen.size(); i++) {
             int current = queen[i];
