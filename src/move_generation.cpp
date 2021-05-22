@@ -556,186 +556,184 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
     Bitboard queen = White ? board.queenW : board.queenB;
     // create all moves for queen
     for (int i = 0; i < queen.size(); i++) {
-            int current = queen[i];
-            if (current == 1) {
-                int x = i % 8;
+        int current = queen[i];
+        if (current == 1) {
+            int x = i % 8;
 
-                // check horizontal and vertical moves (same as rook)
+            // check horizontal and vertical moves (same as rook)
 
-                // vertical moves:
-                Bitboard legal_check;
+            // vertical moves:
+            Bitboard legal_check;
 
-                for (int z = 0; z < 8; z++) {
-                    if (x == i) {x += 8; continue;}
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[x] = 1;
+            for (int z = 0; z < 8; z++) {
+                if (x == i) {x += 8; continue;}
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[x] = 1;
 
-                    // set move check bitboard:
-                    int factor;
-                    if (i < x) {factor = 8;} else {factor = -8;}
-                    int check = i + factor;
-                    for (int counter =  0; counter < abs(i - x) / 8; counter++) {
-                        if (check == i || check == x) {check += factor; continue;}
-                        legal_check[check] = 1;
-                        check += factor;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_STRAIGHT;
-
-                    moves->push_back(new_move);
-                    legal_check.reset();
-                    x += 8;
+                // set move check bitboard:
+                int factor;
+                if (i < x) {factor = 8;} else {factor = -8;}
+                int check = i + factor;
+                for (int counter =  0; counter < abs(i - x) / 8; counter++) {
+                    if (check == i || check == x) {check += factor; continue;}
+                    legal_check[check] = 1;
+                    check += factor;
                 }
 
-                // horizontal moves:
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_STRAIGHT;
+
+                moves->push_back(new_move);
                 legal_check.reset();
-
-                x = std::trunc(i / 8) * 8;
-                for (int z = 0; z < 8; z++) {
-                    if (x == i) {x++; continue;}
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[x] = 1;
-
-                    // set move check bitboard:
-                    int factor;
-                    if (i < x) {factor = 1;} else {factor = -1;}
-                    int check = i + factor;
-                    for (int counter = 0; counter < abs(i - x); counter++) {
-                        if (check == i || check == x) {check += factor; continue;}
-                        legal_check[check] = 1;
-                        check += factor;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_STRAIGHT;
-
-                    moves->push_back(new_move);
-                    legal_check.reset();
-                    x++;
-                }
-                
-                // check diagnol moves (same as bishop)
-
-                legal_check.reset();
-
-                // moving up right
-                int row = get_row(i);
-                x = i + 1;
-                int y = i - 8 + 1;
-                while (get_row(x) == row && get_row(y) >= 0) {
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[y] = 1;
-
-                    if ((y + 8 - 1) != i) {
-                        legal_check[y + 8 - 1] = 1;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_DIAGNOL;
-
-                    moves->push_back(new_move);
-                    x++;
-                    y = y - 8 + 1;
-                }
-
-                // moving up left
-                legal_check.reset();
-
-                x = i - 1;
-                y = i - 8 - 1;
-                while(get_row(x) == row && get_row(y) >= 0) {
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[y] = 1;
-
-                    if ((y + 8 + 1) != i) {
-                        legal_check[y + 8 + 1] = 1;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_DIAGNOL;
-
-                    moves->push_back(new_move);
-                    x--;
-                    y = y - 8 - 1;
-                }
-
-                // moving down right
-                legal_check.reset();
-
-                x = i + 1;
-                y = i + 8 + 1;
-                while (get_row(x) == row && get_row(y) <= 7) {
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[y] = 1;
-
-                    if ((y - 8 - 1) != i) {
-                        legal_check[y - 8 - 1] = 1;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_DIAGNOL;
-
-                    moves->push_back(new_move);
-                    x ++;
-                    y = y + 8 + 1;
-                }
-
-                // moving down left
-                legal_check.reset();
-
-                x = i - 1;
-                y = i + 8 - 1;
-                while (get_row(x) == row && get_row(y) <= 7) {
-                    Bitboard move_board;
-                    move_board[i] = 1;
-                    move_board[y] = 1;
-
-                    if ((y - 8 + 1) != i) {
-                        legal_check[y - 8 + 1] = 1;
-                    }
-
-                    Move new_move;
-                    new_move.move = move_board;
-                    new_move.piece = pQueen;
-                    new_move.legal_check = legal_check;
-                    new_move.type = QUEEN_DIAGNOL;
-
-                    moves->push_back(new_move);
-                    x --;
-                    y = y + 8 - 1;
-                }
-
+                x += 8;
             }
+
+            // horizontal moves:
+            legal_check.reset();
+
+            x = std::trunc(i / 8) * 8;
+            for (int z = 0; z < 8; z++) {
+                if (x == i) {x++; continue;}
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[x] = 1;
+
+                // set move check bitboard:
+                int factor;
+                if (i < x) {factor = 1;} else {factor = -1;}
+                int check = i + factor;
+                for (int counter = 0; counter < abs(i - x); counter++) {
+                    if (check == i || check == x) {check += factor; continue;}
+                    legal_check[check] = 1;
+                    check += factor;
+                }
+
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_STRAIGHT;
+
+                moves->push_back(new_move);
+                legal_check.reset();
+                x++;
+            }
+            
+            // check diagnol moves (same as bishop)
+
+            legal_check.reset();
+
+            // moving up right
+            int row = get_row(i);
+            x = i + 1;
+            int y = i - 8 + 1;
+            while (get_row(x) == row && get_row(y) >= 0) {
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[y] = 1;
+
+                if ((y + 8 - 1) != i) {
+                    legal_check[y + 8 - 1] = 1;
+                }
+
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_DIAGNOL;
+
+                moves->push_back(new_move);
+                x++;
+                y = y - 8 + 1;
+            }
+
+            // moving up left
+            legal_check.reset();
+
+            x = i - 1;
+            y = i - 8 - 1;
+            while(get_row(x) == row && get_row(y) >= 0) {
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[y] = 1;
+
+                if ((y + 8 + 1) != i) {
+                    legal_check[y + 8 + 1] = 1;
+                }
+
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_DIAGNOL;
+
+                moves->push_back(new_move);
+                x--;
+                y = y - 8 - 1;
+            }
+
+            // moving down right
+            legal_check.reset();
+
+            x = i + 1;
+            y = i + 8 + 1;
+            while (get_row(x) == row && get_row(y) <= 7) {
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[y] = 1;
+
+                if ((y - 8 - 1) != i) {
+                    legal_check[y - 8 - 1] = 1;
+                }
+
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_DIAGNOL;
+
+                moves->push_back(new_move);
+                x ++;
+                y = y + 8 + 1;
+            }
+
+            // moving down left
+            legal_check.reset();
+
+            x = i - 1;
+            y = i + 8 - 1;
+            while (get_row(x) == row && get_row(y) <= 7) {
+                Bitboard move_board;
+                move_board[i] = 1;
+                move_board[y] = 1;
+
+                if ((y - 8 + 1) != i) {
+                    legal_check[y - 8 + 1] = 1;
+                }
+
+                Move new_move;
+                new_move.move = move_board;
+                new_move.piece = pQueen;
+                new_move.legal_check = legal_check;
+                new_move.type = QUEEN_DIAGNOL;
+
+                moves->push_back(new_move);
+                x --;
+                y = y + 8 - 1;
+            }
+
         }
+    }
 
 }
 
 // generate all moves for certain side
 vector<Move> generate_moves(Board board, bool White) {
     vector<Move> moves = {};
-
-    // setting boards based on color
 
     generate_moves_for_pawn(&moves, board, White);
     generate_moves_for_knights(&moves, board, White);
