@@ -552,18 +552,7 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
     }
 }
 
-// generate all moves for certain side
-vector<Move> generate_moves(Board board, bool White) {
-    vector<Move> moves = {};
-
-    // setting boards based on color
-
-    generate_moves_for_pawn(&moves, board, White);
-    generate_moves_for_knights(&moves, board, White);
-    generate_moves_for_king(&moves, board, White);
-    generate_moves_for_rook(&moves, board, White);
-    generate_moves_for_bishop(&moves, board, White);
-
+void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
     Bitboard queen = White ? board.queenW : board.queenB;
     // create all moves for queen
     for (int i = 0; i < queen.size(); i++) {
@@ -598,7 +587,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_STRAIGHT;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     legal_check.reset();
                     x += 8;
                 }
@@ -629,7 +618,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_STRAIGHT;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     legal_check.reset();
                     x++;
                 }
@@ -657,7 +646,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_DIAGNOL;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     x++;
                     y = y - 8 + 1;
                 }
@@ -682,7 +671,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_DIAGNOL;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     x--;
                     y = y - 8 - 1;
                 }
@@ -707,7 +696,7 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_DIAGNOL;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     x ++;
                     y = y + 8 + 1;
                 }
@@ -732,13 +721,28 @@ vector<Move> generate_moves(Board board, bool White) {
                     new_move.legal_check = legal_check;
                     new_move.type = QUEEN_DIAGNOL;
 
-                    moves.push_back(new_move);
+                    moves->push_back(new_move);
                     x --;
                     y = y + 8 - 1;
                 }
 
             }
         }
+
+}
+
+// generate all moves for certain side
+vector<Move> generate_moves(Board board, bool White) {
+    vector<Move> moves = {};
+
+    // setting boards based on color
+
+    generate_moves_for_pawn(&moves, board, White);
+    generate_moves_for_knights(&moves, board, White);
+    generate_moves_for_king(&moves, board, White);
+    generate_moves_for_rook(&moves, board, White);
+    generate_moves_for_bishop(&moves, board, White);
+    generate_moves_for_queen(&moves, board, White);
 
     return moves;
 }
