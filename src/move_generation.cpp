@@ -156,14 +156,7 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
     }
 }
 
-// generate all moves for certain side
-vector<Move> generate_moves(Board board, bool White) {
-    vector<Move> moves = {};
-
-    // setting boards based on color
-
-    generate_moves_for_pawn(&moves, board, White);
-    
+void generate_moves_for_knights(vector<Move>* moves, Board board, bool White) {
     Bitboard knight = White ? board.knightW : board.knightB;
 
     // create all moves for knights
@@ -192,7 +185,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i - 2 + 8] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move left 2 up 1
@@ -203,7 +196,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i - 2 - 8] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move right 2 down 1
@@ -214,7 +207,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i + 2 + 8] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move right 2 up 1
@@ -225,7 +218,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i + 2 - 8] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
 
@@ -237,7 +230,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i - 1 - 16] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move up 2 right 1
@@ -248,7 +241,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i + 1 - 16] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move down 2 left 1
@@ -259,7 +252,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i - 1 + 16] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
             // move down 2 right 1
@@ -270,11 +263,22 @@ vector<Move> generate_moves(Board board, bool White) {
                 move_board[i + 1 + 16] = 1;
                 new_move.move = move_board;
                 new_move.piece = pKnight;
-                moves.push_back(new_move);
+                moves->push_back(new_move);
             }
 
         }
     }
+}
+
+// generate all moves for certain side
+vector<Move> generate_moves(Board board, bool White) {
+    vector<Move> moves = {};
+
+    // setting boards based on color
+
+    generate_moves_for_pawn(&moves, board, White);
+    generate_moves_for_knights(&moves, board, White);
+    
 
     Bitboard king = White ? board.kingW : board.kingB;
     // create all moves for king
