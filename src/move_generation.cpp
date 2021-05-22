@@ -444,19 +444,7 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
     }
 }
 
-// generate all moves for certain side
-vector<Move> generate_moves(Board board, bool White) {
-    vector<Move> moves = {};
-
-    // setting boards based on color
-
-    generate_moves_for_pawn(&moves, board, White);
-    generate_moves_for_knights(&moves, board, White);
-    generate_moves_for_king(&moves, board, White);
-    generate_moves_for_rook(&moves, board, White);
-
-    
-
+void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
     Bitboard bishop = White ? board.bishopW : board.bishopB;
     // create all moves for bishop
     for (int i = 0; i < bishop.size(); i++) {
@@ -483,7 +471,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 new_move.piece = pBishop;
                 new_move.legal_check = legal_check;
 
-                moves.push_back(new_move);
+                moves->push_back(new_move);
                 x++;
                 y = y - 8 + 1;
             }
@@ -507,7 +495,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 new_move.piece = pBishop;
                 new_move.legal_check = legal_check;
 
-                moves.push_back(new_move);
+                moves->push_back(new_move);
                 x--;
                 y = y - 8 - 1;
             }
@@ -531,7 +519,7 @@ vector<Move> generate_moves(Board board, bool White) {
                 new_move.piece = pBishop;
                 new_move.legal_check = legal_check;
 
-                moves.push_back(new_move);
+                moves->push_back(new_move);
                 x ++;
                 y = y + 8 + 1;
             }
@@ -555,13 +543,26 @@ vector<Move> generate_moves(Board board, bool White) {
                 new_move.piece = pBishop;
                 new_move.legal_check = legal_check;
 
-                moves.push_back(new_move);
+                moves->push_back(new_move);
                 x --;
                 y = y + 8 - 1;
             }
 
         }
     }
+}
+
+// generate all moves for certain side
+vector<Move> generate_moves(Board board, bool White) {
+    vector<Move> moves = {};
+
+    // setting boards based on color
+
+    generate_moves_for_pawn(&moves, board, White);
+    generate_moves_for_knights(&moves, board, White);
+    generate_moves_for_king(&moves, board, White);
+    generate_moves_for_rook(&moves, board, White);
+    generate_moves_for_bishop(&moves, board, White);
 
     Bitboard queen = White ? board.queenW : board.queenB;
     // create all moves for queen
