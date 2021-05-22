@@ -64,7 +64,7 @@ TEST(MoveGenerationTest, CompareGeneratedMoves) {
 
   // proven number of moves at depth index (depth 0 is really depth 1, or 1 move for white)
   // proven move counts taken from https://en.wikipedia.org/wiki/Shannon_number
-  vector<int> proven_number = {20, 400, 8902, 197281, 4865609, 119060324}
+  vector<int> proven_number = {20, 400, 8902, 197281, 4865609, 119060324};
 
   Board board;
   board.init_board(BoardConstants::DefaultFEN);
