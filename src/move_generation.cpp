@@ -22,38 +22,36 @@ int get_row(int index) {
     return std::trunc(index / 8);
 }
 
+size_t add_move_generic(vector<Move>* moves, int i, int x, int piece, int type) {
+    Bitboard move_board;
+    move_board[i] = move_board[x] = 1;
+    Move move;
+    move.move = move_board;
+    move.piece = piece;
+    move.type = type;
+    moves->push_back(move);
+    return moves->size() - 1;
+}
+
 void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
+    auto add_move = [&moves](int i, int x, int type = REGULAR_MOVE) {
+        return add_move_generic(moves, i, x, pPawn, type);
+    };
+    
     if (White) {
         // create all moves for pawns
         for (int i = 0; i < board.pawnW.size(); i++) {
             int current = board.pawnW[i];
             if (current == 1) {
-                Move new_move;
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board = move_board >> 8;
-                move_board[i] = 1;
-
-                new_move.move = move_board;
-                new_move.piece = pPawn;
-                moves->push_back(new_move);
+                add_move(i, i-8);
 
                 // check if pawn can move up 2
                 if (48 <= i && i <= 55) {
-                    Move new_double;
-                    Bitboard double_move;
-                    double_move[i] = 1;
-                    double_move = double_move >> 16;
-                    double_move[i] = 1;
-                    
                     Bitboard legal_check;
                     legal_check[i - 8] = 1;
 
-                    new_double.move = double_move;
-                    new_double.piece = pPawn;
-                    new_double.type = PAWN_DOUBLE;
-                    new_double.legal_check = legal_check;
-                    moves->push_back(new_double);
+                    size_t index = add_move(i, i-16, PAWN_DOUBLE);
+                    (*moves)[index].legal_check = legal_check;
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -62,28 +60,12 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
 
                 // eat up left
                 if (space_left && space_above) {
-                    Move m_eat_left;
-                    m_eat_left.type = PAWN_EAT;
-                    Bitboard eat_left;
-                    eat_left[i] = 1;
-                    eat_left[i - 8 - 1] = 1;
-
-                    m_eat_left.move = eat_left;
-                    m_eat_left.piece = pPawn;
-                    moves->push_back(m_eat_left);
+                    add_move(i, i-8-1, PAWN_EAT);
                 }
 
                 // eat up right
                 if (space_right && space_above) {
-                    Move m_eat_right;
-                    m_eat_right.type = PAWN_EAT;
-                    Bitboard eat_right;
-                    eat_right[i] = 1;
-                    eat_right[i - 8 + 1] = 1;
-
-                    m_eat_right.move = eat_right;
-                    m_eat_right.piece = pPawn;
-                    moves->push_back(m_eat_right);
+                    add_move(i, i-8+1, PAWN_EAT);
                 }
 
             }
@@ -94,30 +76,14 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
         for (int i = 0; i < board.pawnB.size(); i++) {
             int current = board.pawnB[i];
             if (current == 1) {
-                Move new_move;
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i + 8] = 1;
-
-                new_move.move = move_board;
-                new_move.piece = pPawn;
-                moves->push_back(new_move);
+                add_move(i, i+8);
 
                 // move down 2
                 if (get_row(i) == 1) {
-                    Move new_double;
-                    Bitboard double_move;
-                    double_move[i] = 1;
-                    double_move[i + 16] = 1;
-
                     Bitboard legal_check;
                     legal_check[i + 8] = 1;
-
-                    new_double.move = double_move;
-                    new_double.piece = pPawn;
-                    new_double.type = PAWN_DOUBLE;
-                    new_double.legal_check = legal_check;
-                    moves->push_back(new_double);
+                    size_t index = add_move(i, i+16, PAWN_DOUBLE);
+                    (*moves)[index].legal_check = legal_check;
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -126,30 +92,13 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
 
                 // eat left
                 if (space_left && space_below) {
-                    Move m_eat_left;
-                    Bitboard eat_left;
-                    eat_left[i] = 1;
-                    eat_left[i + 8 - 1] = 1;
-                    m_eat_left.type = PAWN_EAT;
-
-                    m_eat_left.move = eat_left;
-                    m_eat_left.piece = pPawn;
-                    moves->push_back(m_eat_left);
+                    add_move(i, i+8-1, PAWN_EAT);
                 }
 
                 // eat right
                 if (space_right && space_below) {
-                    Move m_eat_right;
-                    Bitboard eat_right;
-                    eat_right[i] = 1;
-                    eat_right[i + 8 + 1] = 1;
-                    m_eat_right.type = PAWN_EAT;
-
-                    m_eat_right.move = eat_right;
-                    m_eat_right.piece = pPawn;
-                    moves->push_back(m_eat_right);
+                    add_move(i, i+8+1, PAWN_EAT);
                 }
-
             }
         }
     
