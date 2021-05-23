@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <fstream>
+#include <filesystem>
 #include "board.h"
 #include "move_generation.h"
 #include "eval.h"
@@ -9,13 +10,19 @@
 
 #include <vector>
 
+namespace fs = std::__fs::filesystem;
+
+std::string get_all_white_moves();
+std::string read_file(string filename);
+std::string get_testdata_path(string filename);
+Board get_default_board();
+string save_moves(vector<Move>* moves, string filename);
+
+const bool WHITE = true;
+
 // Demonstrate some basic assertions.
 TEST(MoveGenerationTest, CountGeneratedMoves) {
-  Board board;
-  init_eval_center();
-  board.init_board(BoardConstants::DefaultFEN);
-  bool isWhite = true;
-  vector<Move> moves = generate_moves(board, isWhite);
+  vector<Move> moves = generate_moves(get_default_board(), WHITE);
   size_t count = moves.size();
   EXPECT_EQ(count, 104);
 }
@@ -101,18 +108,54 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
 }
 
 TEST(MoveGenerationTest, ListAllMovesWhite) {
+    vector<Move> moves = generate_moves(get_default_board(), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_white.txt");
+    string expected = read_file(get_testdata_path("all_white_moves_0.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(MoveGenerationTest, ListAllMovesBlack) {
+    vector<Move> moves = generate_moves(get_default_board(), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_black.txt");
+    string expected = read_file(get_testdata_path("all_black_moves_0.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+Board get_default_board() {
     Board board;
     init_eval_center();
     board.init_board(BoardConstants::DefaultFEN);
-    bool isWhite = true;
-    vector<Move> moves = generate_moves(board, isWhite);
+    return board;
+}
+
+string save_moves(vector<Move>* moves, string filename) {
     std::stringstream ss;
-    for(Move move: moves) {
+    for(Move move: *moves) {
         ss << move_to_string(&move) << std::endl;
     }
     
+    string actual = ss.str();
+    
     std::ofstream outfile;
-    outfile.open("./mycooltest.txt");
-    outfile << ss.str();
+    outfile.open(filename);
+    outfile << actual;
     outfile.close();
+    
+    return actual;
 }
+
+std::string get_testdata_path(string filename) {
+    fs::path test_data_path = fs::path("..") / "tests" / "data" / filename;
+    return test_data_path.string();
+}
+
+std::string read_file(string filename) {
+    std::ifstream t(filename);
+    std::string str((std::istreambuf_iterator<char>(t)),
+                     std::istreambuf_iterator<char>());
+    
+    return str;
+}
+
