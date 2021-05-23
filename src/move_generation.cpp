@@ -379,6 +379,12 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
 
 void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
     Bitboard queen = White ? board.queenW : board.queenB;
+    
+    auto add_move = [&moves](int i, int x, Bitboard legal_check, int type) {
+        size_t index = add_move_generic(moves, i, x, pQueen, type);
+        (*moves)[index].legal_check = legal_check;
+    };
+    
     // create all moves for queen
     for (int i = 0; i < queen.size(); i++) {
         int current = queen[i];
@@ -392,10 +398,6 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
 
             for (int z = 0; z < 8; z++) {
                 if (x == i) {x += 8; continue;}
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[x] = 1;
-
                 // set move check bitboard:
                 int factor;
                 if (i < x) {factor = 8;} else {factor = -8;}
@@ -406,13 +408,7 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
                     check += factor;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_STRAIGHT;
-
-                moves->push_back(new_move);
+                add_move(i, x, legal_check, QUEEN_STRAIGHT);
                 legal_check.reset();
                 x += 8;
             }
@@ -423,10 +419,7 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
             x = std::trunc(i / 8) * 8;
             for (int z = 0; z < 8; z++) {
                 if (x == i) {x++; continue;}
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[x] = 1;
-
+                
                 // set move check bitboard:
                 int factor;
                 if (i < x) {factor = 1;} else {factor = -1;}
@@ -437,13 +430,7 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
                     check += factor;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_STRAIGHT;
-
-                moves->push_back(new_move);
+                add_move(i, x, legal_check, QUEEN_STRAIGHT);
                 legal_check.reset();
                 x++;
             }
@@ -457,21 +444,11 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
             x = i + 1;
             int y = i - 8 + 1;
             while (get_row(x) == row && get_row(y) >= 0) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y + 8 - 1) != i) {
                     legal_check[y + 8 - 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_DIAGNOL;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check, QUEEN_DIAGNOL);
                 x++;
                 y = y - 8 + 1;
             }
@@ -482,21 +459,11 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
             x = i - 1;
             y = i - 8 - 1;
             while(get_row(x) == row && get_row(y) >= 0) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y + 8 + 1) != i) {
                     legal_check[y + 8 + 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_DIAGNOL;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check, QUEEN_DIAGNOL);
                 x--;
                 y = y - 8 - 1;
             }
@@ -507,21 +474,11 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
             x = i + 1;
             y = i + 8 + 1;
             while (get_row(x) == row && get_row(y) <= 7) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y - 8 - 1) != i) {
                     legal_check[y - 8 - 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_DIAGNOL;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check, QUEEN_DIAGNOL);
                 x ++;
                 y = y + 8 + 1;
             }
@@ -532,21 +489,11 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
             x = i - 1;
             y = i + 8 - 1;
             while (get_row(x) == row && get_row(y) <= 7) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y - 8 + 1) != i) {
                     legal_check[y - 8 + 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pQueen;
-                new_move.legal_check = legal_check;
-                new_move.type = QUEEN_DIAGNOL;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check, QUEEN_DIAGNOL);
                 x --;
                 y = y + 8 - 1;
             }
