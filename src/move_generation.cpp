@@ -301,6 +301,12 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
 
 void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
     Bitboard bishop = White ? board.bishopW : board.bishopB;
+    
+    auto add_move = [&moves](int i, int x, Bitboard legal_check) {
+        size_t index = add_move_generic(moves, i, x, pBishop, REGULAR_MOVE);
+        (*moves)[index].legal_check = legal_check;
+    };
+    
     // create all moves for bishop
     for (int i = 0; i < bishop.size(); i++) {
         int current = bishop[i];
@@ -313,20 +319,11 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
             int x = i + 1;
             int y = i - 8 + 1;
             while (get_row(x) == row && get_row(y) >= 0) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y + 8 - 1) != i) {
                     legal_check[y + 8 - 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pBishop;
-                new_move.legal_check = legal_check;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check);
                 x++;
                 y = y - 8 + 1;
             }
@@ -337,20 +334,11 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
             x = i - 1;
             y = i - 8 - 1;
             while(get_row(x) == row && get_row(y) >= 0) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y + 8 + 1) != i) {
                     legal_check[y + 8 + 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pBishop;
-                new_move.legal_check = legal_check;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check);
                 x--;
                 y = y - 8 - 1;
             }
@@ -361,20 +349,11 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
             x = i + 1;
             y = i + 8 + 1;
             while (get_row(x) == row && get_row(y) <= 7) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y - 8 - 1) != i) {
                     legal_check[y - 8 - 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pBishop;
-                new_move.legal_check = legal_check;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check);
                 x ++;
                 y = y + 8 + 1;
             }
@@ -385,20 +364,11 @@ void generate_moves_for_bishop(vector<Move>* moves, Board board, bool White) {
             x = i - 1;
             y = i + 8 - 1;
             while (get_row(x) == row && get_row(y) <= 7) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[y] = 1;
-
                 if ((y - 8 + 1) != i) {
                     legal_check[y - 8 + 1] = 1;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pBishop;
-                new_move.legal_check = legal_check;
-
-                moves->push_back(new_move);
+                add_move(i, y, legal_check);
                 x --;
                 y = y + 8 - 1;
             }
