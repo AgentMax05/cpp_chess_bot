@@ -177,6 +177,11 @@ void generate_moves_for_knights(vector<Move>* moves, Board board, bool White) {
 
 void generate_moves_for_king(vector<Move>* moves, Board board, bool White) {
     Bitboard king = White ? board.kingW : board.kingB;
+    
+    auto add_move = [&moves](int i, int x, int type = REGULAR_MOVE) {
+        add_move_generic(moves, i, x, pKing, type);
+    };
+    
     // create all moves for king
     for (int i = 0; i < king.size(); i++) {
         int current = king[i];
@@ -190,93 +195,44 @@ void generate_moves_for_king(vector<Move>* moves, Board board, bool White) {
 
             // move up
             if (space_above) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i - 8] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i-8);
             }
 
 
             // move down
             if (space_below) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i + 8] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i+8);
             }
 
             // move left
             if (space_left) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i - 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i-1);
             }
 
             // move right
             if (space_right) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i + 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i+1);
             }
 
             // move up left
             if (space_left && space_above) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i - 8 - 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i-8-1);
             }
 
             // move up right
             if (space_right && space_above) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i - 8 + 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i-8+1);
             }
 
             // move down left
             if (space_left && space_below) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i + 8 - 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i+8-1);
             }
 
             // move down right
             if (space_right && space_below) {
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[i + 8 + 1] = 1;
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pKing;
-                moves->push_back(new_move);
+                add_move(i, i+8+1);
             }
-
         }
     }
 }
