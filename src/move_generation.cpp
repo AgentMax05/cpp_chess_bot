@@ -22,6 +22,9 @@ int get_row(int index) {
     return std::trunc(index / 8);
 }
 
+/**
+ Returns the index of the move just added.
+ */
 size_t add_move_generic(vector<Move>* moves, int i, int x, int piece, int type) {
     Bitboard move_board;
     move_board[i] = move_board[x] = 1;
@@ -30,6 +33,7 @@ size_t add_move_generic(vector<Move>* moves, int i, int x, int piece, int type) 
     move.piece = piece;
     move.type = type;
     moves->push_back(move);
+
     return moves->size() - 1;
 }
 
@@ -239,6 +243,10 @@ void generate_moves_for_king(vector<Move>* moves, Board board, bool White) {
 
 void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
     Bitboard rook = White ? board.rookW : board.rookB;
+    auto add_move = [&moves](int i, int x, Bitboard legal_check) {
+        size_t index = add_move_generic(moves, i, x, pRook, REGULAR_MOVE);
+        (*moves)[index].legal_check = legal_check;
+    };
     // create all moves for rook
     for (int i = 0; i < rook.size(); i++) {
         int current = rook[i];
@@ -250,9 +258,6 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
 
             for (int z = 0; z < 8; z++) {
                 if (x == i) {x += 8; continue;}
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[x] = 1;
 
                 // set move check bitboard:
                 int factor;
@@ -264,11 +269,7 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
                     check += factor;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pRook;
-                new_move.legal_check = legal_check;
-                moves->push_back(new_move);
+                add_move(i, x, legal_check);
                 legal_check.reset();
                 x += 8;
             }
@@ -279,9 +280,6 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
             x = std::trunc(i / 8) * 8;
             for (int z = 0; z < 8; z++) {
                 if (x == i) {x++; continue;}
-                Bitboard move_board;
-                move_board[i] = 1;
-                move_board[x] = 1;
 
                 // set move check bitboard:
                 int factor;
@@ -293,11 +291,7 @@ void generate_moves_for_rook(vector<Move>* moves, Board board, bool White) {
                     check += factor;
                 }
 
-                Move new_move;
-                new_move.move = move_board;
-                new_move.piece = pRook;
-                new_move.legal_check = legal_check;
-                moves->push_back(new_move);
+                add_move(i, x, legal_check);
                 legal_check.reset();
                 x++;
             }
