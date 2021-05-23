@@ -86,10 +86,10 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD2) {
   EXPECT_EQ(moves_test(1), 400);
 }
 
-TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
+TEST(MoveGenerationTest, DISABLED_CompareGeneratedMovesD3) {
   EXPECT_EQ(moves_test(2), 8902);
 }
 
-TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
+TEST(MoveGenerationTest, DISABLED_CompareGeneratedMovesD4) {
   EXPECT_EQ(moves_test(3), 197281);
 }
