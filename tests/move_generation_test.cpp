@@ -18,6 +18,9 @@ TEST(MoveGenerationTest, CountGeneratedMoves) {
   EXPECT_EQ(count, 104);
 }
 
+Board copy(Board board) {
+  return board;
+}
 
 int possible_moves(Board board, bool isWhite, int depth) {
   vector<Move> moves = generate_moves(board, isWhite);
@@ -28,30 +31,33 @@ int possible_moves(Board board, bool isWhite, int depth) {
     int legal_moves = 0;
 
     for (int i = 0; i < moves.size(); i++) {
-      board.make_move(moves[i].piece, moves[i].move, isWhite);
-      set_attacking(board);
+      Board board_copy = copy(board);
+      board_copy.make_move(moves[i].piece, moves[i].move, isWhite);
+      set_attacking(board_copy);
 
-      if (!king_check(board, isWhite)) {
+
+      if (!king_check(board_copy, isWhite)) {
         legal_moves++;
       }
       // undo the move here
-      board.make_move(moves[i].piece, moves[i].move, isWhite);
+      // board.make_move(moves[i].piece, moves[i].move, isWhite);
     }
 
-    return moves.size();
+    return legal_moves;
   }
 
   int found_moves = 0;
 
   for (int i = 0; i < moves.size(); i++) {
-    board.make_move(moves[i].piece, moves[i].move, isWhite);
-    set_attacking(board);
+    Board board_copy = copy(board);
+    board_copy.make_move(moves[i].piece, moves[i].move, isWhite);
+    set_attacking(board_copy);
 
-    if (!king_check(board, isWhite)) {
-      found_moves += possible_moves(board, isWhite == false, depth - 1);
+    if (!king_check(board_copy, isWhite)) {
+      found_moves += possible_moves(board_copy, isWhite == false, depth - 1);
     }
     // undo made move
-    board.make_move(moves[i].piece, moves[i].move, isWhite);
+    // board.make_move(moves[i].piece, moves[i].move, isWhite);
   }
 
   return found_moves;
@@ -86,10 +92,10 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD2) {
   EXPECT_EQ(moves_test(1), 400);
 }
 
-TEST(MoveGenerationTest, DISABLED_CompareGeneratedMovesD3) {
+TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
   EXPECT_EQ(moves_test(2), 8902);
 }
 
-TEST(MoveGenerationTest, DISABLED_CompareGeneratedMovesD4) {
+TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
   EXPECT_EQ(moves_test(3), 197281);
 }

@@ -59,9 +59,14 @@ vector<Move> generate_moves(Board board, bool White) {
                     double_move[i] = 1;
                     double_move = double_move >> 16;
                     double_move[i] = 1;
+                    
+                    Bitboard legal_check;
+                    legal_check[i - 8] = 1;
 
                     new_double.move = double_move;
                     new_double.piece = pPawn;
+                    new_double.type = PAWN_DOUBLE;
+                    new_double.legal_check = legal_check;
                     moves.push_back(new_double);
                 }
 
@@ -125,8 +130,13 @@ vector<Move> generate_moves(Board board, bool White) {
                     double_move[i] = 1;
                     double_move[i + 16] = 1;
 
+                    Bitboard legal_check;
+                    legal_check[i + 8] = 1;
+
                     new_double.move = double_move;
                     new_double.piece = pPawn;
+                    new_double.type = PAWN_DOUBLE;
+                    new_double.legal_check = legal_check;
                     moves.push_back(new_double);
                 }
 
