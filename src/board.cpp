@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <bitset>
-
+#include <sstream>
 #include "board.h"
 
 typedef std::bitset<64> Bitboard;
@@ -165,4 +165,14 @@ void Board::init_board(string FEN) {
     }
 
     update_boards();
+}
+
+string move_to_string(Move* move) {
+    std::stringstream ss;
+    ss << "{Move piece=" << move->piece
+       << " type=" << move->type
+       << " move=" << move->move
+       << " legal_check=" << move->legal_check
+       << "}";
+    return ss.str();
 }

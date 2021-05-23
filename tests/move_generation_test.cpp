@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <sstream>
+#include <fstream>
 #include "board.h"
 #include "move_generation.h"
 #include "eval.h"
@@ -61,9 +63,7 @@ int possible_moves(Board board, bool isWhite, int depth) {
   }
 
   return found_moves;
-
 }
-
 
 int moves_test(int depth) {
   Board board;
@@ -98,4 +98,21 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
 
 TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
   EXPECT_EQ(moves_test(3), 197281);
+}
+
+TEST(MoveGenerationTest, ListAllMovesWhite) {
+    Board board;
+    init_eval_center();
+    board.init_board(BoardConstants::DefaultFEN);
+    bool isWhite = true;
+    vector<Move> moves = generate_moves(board, isWhite);
+    std::stringstream ss;
+    for(Move move: moves) {
+        ss << move_to_string(&move) << std::endl;
+    }
+    
+    std::ofstream outfile;
+    outfile.open("./mycooltest.txt");
+    outfile << ss.str();
+    outfile.close();
 }

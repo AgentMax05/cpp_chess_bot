@@ -29,6 +29,8 @@ struct Move {
     Bitboard legal_check;
 };
 
+string move_to_string(Move* move);
+
 #if !defined(BOARD_CONSTANTS_H)
 #define BOARD_CONSTANTS_H
 
