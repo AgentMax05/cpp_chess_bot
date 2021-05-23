@@ -33,6 +33,11 @@ bool check_legal(Board board, Move move, bool White) {
     
     // check pawn moves
     if (move.piece == pPawn) {
+        
+        // check if pawn can move up two
+        if (move.type == PAWN_DOUBLE) {
+            if (!((friendly_board | enemy_board) & move.legal_check).none()) {return false;}
+        }
 
         // check if taking is legal
         if (move.type == PAWN_EAT) {

@@ -15,6 +15,7 @@ const int pPawn = 5;
 
 const int REGULAR_MOVE = 0;
 const int PAWN_EAT = 1;
+const int PAWN_DOUBLE = 4;
 const int QUEEN_DIAGNOL = 2;
 const int QUEEN_STRAIGHT = 3;
 
