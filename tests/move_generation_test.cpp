@@ -18,11 +18,9 @@ TEST(MoveGenerationTest, CountGeneratedMoves) {
   EXPECT_EQ(count, 104);
 }
 
-
 Board copy(Board board) {
   return board;
 }
-
 
 int possible_moves(Board board, bool isWhite, int depth) {
   vector<Move> moves = generate_moves(board, isWhite);
