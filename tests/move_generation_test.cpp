@@ -59,19 +59,37 @@ int possible_moves(Board board, bool isWhite, int depth) {
 }
 
 
-// Compare number of generated moves against proven number at each depth
-TEST(MoveGenerationTest, CompareGeneratedMoves) {
-
-  // proven number of moves at depth index (depth 0 is really depth 1, or 1 move for white)
-  // proven move counts taken from https://en.wikipedia.org/wiki/Shannon_number
-  vector<int> proven_number = {20, 400, 8902, 197281, 4865609, 119060324};
-
+int moves_test(int depth) {
   Board board;
   board.init_board(BoardConstants::DefaultFEN);
-  board.update_boards();
   set_attacking(board);
 
-  for (int i = 0; i < 4; i++) {
-    EXPECT_EQ(possible_moves(board, true, i), proven_number[i]);
-  }
+  return possible_moves(board, true, depth);
+}
+
+// proven move counts taken from https://en.wikipedia.org/wiki/Shannon_number
+
+// depth | move count
+// 1     | 20
+// 2     | 400
+// 3     | 8,902
+// 4     | 197,281
+// 5     | 4,865,609
+// 6     | 119,060,324
+
+// Compare number of generated moves against proven number at each depth (depth 0 = depth 1 or 1 move for white)
+TEST(MoveGenerationTest, CompareGeneratedMovesD1) {
+  EXPECT_EQ(moves_test(0), 20);
+}
+
+TEST(MoveGenerationTest, CompareGeneratedMovesD2) {
+  EXPECT_EQ(moves_test(1), 400);
+}
+
+TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
+  EXPECT_EQ(moves_test(2), 8902);
+}
+
+TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
+  EXPECT_EQ(moves_test(3), 197281);
 }
