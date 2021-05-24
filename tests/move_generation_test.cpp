@@ -10,7 +10,11 @@
 
 #include <vector>
 
+#ifdef __APPLE__
 namespace fs = std::__fs::filesystem;
+#else
+namespace fs = std::filesystem;
+#endif
 
 std::string get_all_white_moves();
 std::string read_file(string filename);
