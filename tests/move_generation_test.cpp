@@ -15,14 +15,16 @@ namespace fs = std::filesystem;
 std::string get_all_white_moves();
 std::string read_file(string filename);
 std::string get_testdata_path(string filename);
-Board get_default_board();
+Board get_board(string fen = BoardConstants::DefaultFEN);
 string save_moves(vector<Move>* moves, string filename);
 
 const bool WHITE = true;
+const string FEN_ALPHA = "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3P1Q2/P1P1K3/q5b1";
+const string FEN_BETA = "rk2n1bn/pppppppp/1q3b2/3r3Q/1B1P1N2/6B1/PPP1PPPP/RK1R3N";
 
 // Demonstrate some basic assertions.
 TEST(MoveGenerationTest, CountGeneratedMoves) {
-  vector<Move> moves = generate_moves(get_default_board(), WHITE);
+  vector<Move> moves = generate_moves(get_board(), WHITE);
   size_t count = moves.size();
   EXPECT_EQ(count, 104);
 }
@@ -108,25 +110,57 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
 }
 
 TEST(MoveGenerationTest, ListAllMovesWhite) {
-    vector<Move> moves = generate_moves(get_default_board(), WHITE);
+    vector<Move> moves = generate_moves(get_board(), WHITE);
     string actual = save_moves(&moves, "result_list_all_moves_white.txt");
     string expected = read_file(get_testdata_path("all_white_moves_0.txt"));
     
     EXPECT_EQ(actual, expected);
 }
 
-TEST(MoveGenerationTest, ListAllMovesBlack) {
-    vector<Move> moves = generate_moves(get_default_board(), WHITE);
+TEST(MoveGenerationTest, ListAllMovesDefaultBlack) {
+    vector<Move> moves = generate_moves(get_board(), WHITE);
     string actual = save_moves(&moves, "result_list_all_moves_black.txt");
     string expected = read_file(get_testdata_path("all_black_moves_0.txt"));
     
     EXPECT_EQ(actual, expected);
 }
 
-Board get_default_board() {
+TEST(MoveGenerationTest, ListAllMovesAlphaWhite) {
+    vector<Move> moves = generate_moves(get_board(FEN_ALPHA), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_alpha_white.txt");
+    string expected = read_file(get_testdata_path("all_moves_alpha_white.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(MoveGenerationTest, ListAllMovesAlphaBlack) {
+    vector<Move> moves = generate_moves(get_board(FEN_ALPHA), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_alpha_black.txt");
+    string expected = read_file(get_testdata_path("all_moves_alpha_black.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(MoveGenerationTest, ListAllMovesBetaWhite) {
+    vector<Move> moves = generate_moves(get_board(FEN_BETA), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_beta_white.txt");
+    string expected = read_file(get_testdata_path("all_moves_beta_white.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(MoveGenerationTest, ListAllMovesBetaBlack) {
+    vector<Move> moves = generate_moves(get_board(FEN_BETA), WHITE);
+    string actual = save_moves(&moves, "result_list_all_moves_beta_black.txt");
+    string expected = read_file(get_testdata_path("all_moves_beta_black.txt"));
+    
+    EXPECT_EQ(actual, expected);
+}
+
+Board get_board(string fen) {
     Board board;
     init_eval_center();
-    board.init_board(BoardConstants::DefaultFEN);
+    board.init_board(fen);
     return board;
 }
 
