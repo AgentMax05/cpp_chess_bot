@@ -34,6 +34,9 @@ cmake --build build
 cd build && ctest
 ```
 
+Building the tests requires C++17 for use of the `filesystem` built-in
+namespace to perform path building.
+
 # Continuous Integration (CI)
 
 There is a [GitHub Actions](https://github.com/features/actions) workflow
