@@ -80,7 +80,6 @@ int moves_test(int depth) {
   Board board;
   board.init_board(BoardConstants::DefaultFEN);
   set_attacking(board);
-
   return possible_moves(board, true, depth);
 }
 
@@ -109,6 +108,10 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
 
 TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
   EXPECT_EQ(moves_test(3), 197281);
+}
+
+TEST(MoveGenerationTest, CompareGeneratedMovesD5) {
+  EXPECT_EQ(moves_test(4), 4865609);
 }
 
 TEST(MoveGenerationTest, ListAllMovesWhite) {
