@@ -20,6 +20,46 @@ bool check_legal(Board board, Move move, bool White) {
         friendly_board = board.boardB;
         enemy_board = board.boardW;
     }
+    
+    /*
+        Requirements for castling:
+        1. King and rook have not previously moved
+        2. King cannot move through check
+        3. King cannot be in check
+        4. King does not end up in check (as for any other move, checked in minimax.cpp)
+        5. No pieces between the king and the rook
+    */
+    // check castling moves
+    if (move.piece == pNone && (move.type == L_CASTLE || move.type == R_CASTLE)) {
+        if (White) {
+            if (king_check(board, true)) {return false;}
+
+            if (move.type == L_CASTLE) {
+                if (board.lCastleW == false) {return false;}
+            }
+            else if (move.type == R_CASTLE) {
+                if (board.rCastleW == false) {return false;}
+            }
+            if (!(board.complete_board & move.legal_check).none()) {return false;}
+            if (!(board.attackB & move.legal_check).none()) {return false;}
+            return true;
+        } 
+        
+        else {
+            if (king_check(board, false)) {return false;}
+
+            if (move.type == L_CASTLE) {
+                if (board.lCastleB == false) {return false;}
+            }
+            else if (move.type == R_CASTLE) {
+                if (board.rCastleB == false) {return false;}
+            }
+            if (!(board.complete_board & move.legal_check).none()) {return false;}
+            if (!(board.attackW & move.legal_check).none()) {return false;}
+            return true;
+        }
+    }
+
 
     // check for moving to occupied square
     Bitboard overlap = friendly_board & move.move;
@@ -30,10 +70,51 @@ bool check_legal(Board board, Move move, bool White) {
     }
 
     if (overlap.count() != 1) {return false;}
-    
+
     // check pawn moves
     if (move.piece == pPawn) {
         
+        // check en passant moves
+        /*
+            Requirements for en passant:
+            1. Captured pawn must be on adjacent file and have moved up 2 in one move
+            2. En passant must be made next move after captured pawn moves up 2
+        */
+        if (move.type == PAWN_ENPASSANT) {
+            if (White) {
+                // bitboard representing black pawn that is being taken
+                Bitboard taken = (move.move ^ board.pawnW) << 8;
+                // make sure taken pawn is there
+                if ((board.pawnB & taken).none()) {
+                    return false;
+                }
+                // check if pawn was there previous move
+                if (!(board.epPawns & taken).none()) {
+                    return false;
+                } 
+                // check if pawn moved up 2
+                if ((board.epPawns & (taken >> 16)).none()) {
+                    return false;
+                }
+            } else {
+                // bitboard representing white pawn that is being taken
+                Bitboard taken = (move.move ^ board.pawnB) >> 8;
+                // make sure taken pawn exists
+                if ((board.pawnW & taken).none()) {
+                    return false;
+                }
+                // check if pawn was there previous move
+                if ((board.epPawns & taken).none() == false) {
+                    return false;
+                }
+                // check if pawn moved up 2
+                if ((board.epPawns & (taken << 16)).none()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         // check if pawn can move up two
         if (move.type == PAWN_DOUBLE) {
             if (!((friendly_board | enemy_board) & move.legal_check).none()) {return false;}
