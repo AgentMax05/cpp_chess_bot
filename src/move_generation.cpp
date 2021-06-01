@@ -41,7 +41,7 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
     auto add_move = [&moves](int i, int x, int type = REGULAR_MOVE) {
         return add_move_generic(moves, i, x, pPawn, type);
     };
-    
+
     if (White) {
         // create all moves for pawns
         for (int i = 0; i < board.pawnW.size(); i++) {
@@ -56,6 +56,12 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
 
                     size_t index = add_move(i, i-16, PAWN_DOUBLE);
                     (*moves)[index].legal_check = legal_check;
+                }
+
+                // make en passant move
+                if (24 <= i && i <= 31) {
+                    add_move(i, i-8-1, PAWN_ENPASSANT);
+                    add_move(i, i-8+1, PAWN_ENPASSANT);
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -88,6 +94,12 @@ void generate_moves_for_pawn(vector<Move>* moves, Board board, bool White) {
                     legal_check[i + 8] = 1;
                     size_t index = add_move(i, i+16, PAWN_DOUBLE);
                     (*moves)[index].legal_check = legal_check;
+                }
+
+                // make en passant move
+                if (32 <= i && i <= 39) {
+                    add_move(i, i+8+1, PAWN_ENPASSANT);
+                    add_move(i, i+8-1, PAWN_ENPASSANT);
                 }
 
                 bool space_left = get_row(i - 1) == get_row(i);
@@ -503,6 +515,22 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
 
 }
 
+void generate_castles(vector<Move>* moves, Board board, bool White) {
+
+    auto add_move = [&moves](Bitboard legal_check, int type) {
+        size_t index = add_move_generic(moves, 0, 0, pNone, type);
+        (*moves)[index].legal_check = legal_check;
+    };
+
+    if (White) {
+        add_move(board.lCastleWBoard, L_CASTLE);
+        add_move(board.rCastleWBoard, R_CASTLE);
+    } else {
+        add_move(board.lCastleBBoard, L_CASTLE);
+        add_move(board.rCastleBBoard, R_CASTLE);
+    }
+}
+
 // generate all moves for certain side
 vector<Move> generate_moves(Board board, bool White) {
     vector<Move> moves = {};
@@ -513,6 +541,7 @@ vector<Move> generate_moves(Board board, bool White) {
     generate_moves_for_rook(&moves, board, White);
     generate_moves_for_bishop(&moves, board, White);
     generate_moves_for_queen(&moves, board, White);
+    generate_castles(&moves, board, White);
 
     return moves;
 }
