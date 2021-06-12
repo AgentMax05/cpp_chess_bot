@@ -28,7 +28,7 @@ const string PATH_SEPARATOR = "/";
 TEST(MoveGenerationTest, CountGeneratedMoves) {
   vector<Move> moves = generate_moves(get_board(), WHITE);
   size_t count = moves.size();
-  EXPECT_EQ(count, 104);
+  EXPECT_EQ(count, 106);
 }
 
 Board copy(Board board) {
