@@ -26,7 +26,7 @@ const string FEN_BETA = "rk2n1bn/pppppppp/1q3b2/3r3Q/1B1P1N2/6B1/PPP1PPPP/RK1R3N
 TEST(MoveGenerationTest, CountGeneratedMoves) {
   vector<Move> moves = generate_moves(get_board(), WHITE);
   size_t count = moves.size();
-  EXPECT_EQ(count, 104);
+  EXPECT_EQ(count, 106);
 }
 
 Board copy(Board board) {
