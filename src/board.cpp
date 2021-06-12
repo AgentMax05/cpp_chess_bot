@@ -106,6 +106,7 @@ void Board::make_move(int piece, Bitboard move, bool White, int type /*= 0*/) {
 }
 
 void Board::init_board(string FEN) {
+    load_dbs();
 
     string current = "";
     std::vector<string> fen_notation1 = {};
