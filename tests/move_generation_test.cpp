@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <fstream>
-#include <filesystem>
 #include "board.h"
 #include "move_generation.h"
 #include "eval.h"
@@ -9,8 +8,6 @@
 #include "set_attacking.h"
 
 #include <vector>
-
-namespace fs = std::filesystem;
 
 std::string get_all_white_moves();
 std::string read_file(string filename);
@@ -21,6 +18,11 @@ string save_moves(vector<Move>* moves, string filename);
 const bool WHITE = true;
 const string FEN_ALPHA = "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3P1Q2/P1P1K3/q5b1";
 const string FEN_BETA = "rk2n1bn/pppppppp/1q3b2/3r3Q/1B1P1N2/6B1/PPP1PPPP/RK1R3N";
+#ifdef _WIN32
+const string PATH_SEPARATOR = "\\";
+#else
+const string PATH_SEPARATOR = "/";
+#endif
 
 // Demonstrate some basic assertions.
 TEST(MoveGenerationTest, CountGeneratedMoves) {
@@ -184,8 +186,13 @@ string save_moves(vector<Move>* moves, string filename) {
 }
 
 std::string get_testdata_path(string filename) {
-    fs::path test_data_path = fs::path("..") / "tests" / "data" / filename;
-    return test_data_path.string();
+    std::stringstream ss;
+    ss << ".." << PATH_SEPARATOR 
+       << "tests" << PATH_SEPARATOR
+       << "data" << PATH_SEPARATOR
+       << filename;
+    
+    return ss.str();
 }
 
 std::string read_file(string filename) {
