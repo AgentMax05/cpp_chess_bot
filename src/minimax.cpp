@@ -64,7 +64,6 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
 
     // generate moves for other side (White == false)
     vector<Move> moves = generate_moves(board, White == false);
-    filter_moves(board, moves, White == false);
 
     // check if king is in checkmate or stalemate
     if (moves.size() == 0) {
@@ -124,8 +123,8 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
 
 
 Move best_move(Board board, bool White, int depth) {
+    set_attacking(board);
     vector<Move> moves = generate_moves(board, White);
-    filter_moves(board, moves, White);
 
     nodes = 0;
 
