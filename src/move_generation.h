@@ -22,6 +22,5 @@ const int L_CASTLE = 5;
 const int R_CASTLE = 6;
 
 vector<Move> generate_moves(Board board, bool White);
-void load_dbs();
 int get_row(int index);
 bool in_board(int row);
