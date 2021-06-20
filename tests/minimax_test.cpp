@@ -3,6 +3,7 @@
 #include "move_generation.h"
 #include "eval.h"
 #include "minimax.h"
+#include "database.h"
 
 Move minimax_test_get_board_move(string fen, bool useWhite, int depth) {
   Board board;
