@@ -38,6 +38,7 @@ add_executable(
   src/check_legal.cpp
   src/set_attacking.cpp
   src/BoardRenderer.cpp
+  src/database.cpp
 )
 target_link_libraries(
   all_tests

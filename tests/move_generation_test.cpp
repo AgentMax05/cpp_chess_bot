@@ -6,6 +6,7 @@
 #include "eval.h"
 #include "check_legal.h"
 #include "set_attacking.h"
+#include "database.h"
 
 #include <vector>
 
@@ -37,7 +38,6 @@ Board copy(Board board) {
 
 int possible_moves(Board board, bool isWhite, int depth) {
   vector<Move> moves = generate_moves(board, isWhite);
-  filter_moves(board, moves, isWhite);
 
   if (depth == 0) {
 
