@@ -9,6 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      CTEST_OUTPUT_ON_FAILURE: 1
     steps:
       - uses: actions/checkout@v1
         with:
