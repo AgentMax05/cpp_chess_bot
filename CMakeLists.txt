@@ -21,15 +21,6 @@ file(GLOB SRC_FILES src/*.cpp)
 
 add_executable(
   chess
-  ${SRC_FILES}
-)
-
-add_executable(
-  all_tests
-  tests/eval_test.cpp
-  tests/move_generation_test.cpp
-  tests/minimax_test.cpp
-  tests/board_test.cpp
   src/board.cpp
   src/eval.cpp
   src/misc_funcs.cpp
@@ -38,6 +29,39 @@ add_executable(
   src/check_legal.cpp
   src/set_attacking.cpp
   src/BoardRenderer.cpp
+  src/main.cpp
+)
+
+add_executable(
+  chess_uci
+  src/board.cpp
+  src/eval.cpp
+  src/misc_funcs.cpp
+  src/move_generation.cpp
+  src/minimax.cpp
+  src/check_legal.cpp
+  src/set_attacking.cpp
+  src/BoardRenderer.cpp
+  src/UCI.cpp
+  src/main_uci.cpp
+)
+
+add_executable(
+  all_tests
+  tests/eval_test.cpp
+  tests/move_generation_test.cpp
+  tests/minimax_test.cpp
+  tests/board_test.cpp
+  tests/uci_test.cpp
+  src/board.cpp
+  src/eval.cpp
+  src/misc_funcs.cpp
+  src/move_generation.cpp
+  src/minimax.cpp
+  src/check_legal.cpp
+  src/set_attacking.cpp
+  src/BoardRenderer.cpp
+  src/UCI.cpp
 )
 target_link_libraries(
   all_tests
