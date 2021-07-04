@@ -195,7 +195,7 @@ void load_shifts() {
 
 // used to generate all blockerboards for a blocker mask
 Bitboard gen_blockerboard(uint64_t index, Bitboard blockermask) {
-    std::cerr << "gen_blockerboard :: BEGIN\n" << std::endl;
+    // std::cerr << "gen_blockerboard :: BEGIN\n" << std::endl;
     Bitboard blockerboard = blockermask;
     int bitindex = 0;
     for (int i = 0; i < blockermask.size(); i++) {
@@ -207,13 +207,13 @@ Bitboard gen_blockerboard(uint64_t index, Bitboard blockermask) {
             bitindex++;
         }
     }
-    std::cerr << "gen_blockerboard :: END\n" << std::endl;
+    // std::cerr << "gen_blockerboard :: END\n" << std::endl;
     return blockerboard;
 }
 
 // used to generate moveboard for a square, blocker board, and piece
 Bitboard gen_moveboard(int sq, Bitboard blockerboard, int piece) {
-    std::cerr << "gen_moveboard :: BEGIN\n" << std::endl;
+    // std::cerr << "gen_moveboard :: BEGIN\n" << std::endl;
     Bitboard moveboard;
     int left_edge = int(sq / 8) * 8;
     int right_edge = left_edge + 7;
@@ -285,7 +285,7 @@ Bitboard gen_moveboard(int sq, Bitboard blockerboard, int piece) {
         }
     }
 
-    std::cerr << "gen_moveboard :: END\n" << std::endl;
+    // std::cerr << "gen_moveboard :: END\n" << std::endl;
     return moveboard;
 }
 
