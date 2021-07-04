@@ -102,6 +102,7 @@ vector<Bitboard> king_db(64);
 
 // fill rook_masks and bishop_masks with blocker masks
 void load_masks() {
+    std::cerr << "load_masks :: BEGIN\n" << std::endl;
     for (int i = 0; i < 64; i++) {
         // generate rook blocker mask for square i
         Bitboard rook;
@@ -177,20 +178,24 @@ void load_masks() {
 
         bishop_masks.push_back(bishop);        
     }
+    std::cerr << "load_masks :: END\n" << std::endl;
 }
 
 // fill rook_shifts and bishop_shifts with >> value
 void load_shifts() {
+    std::cerr << "load_shifts :: BEGIN\n" << std::endl;
     for (int i = 0; i < rook_masks.size(); i++) {
         rook_shifts[i] = 64 - rook_masks[i].count();
     }
     for (int i = 0; i < bishop_masks.size(); i++) {
         bishop_shifts[i] = 64 - bishop_masks[i].count();
     }
+    std::cerr << "load_shifts :: END\n" << std::endl;
 }
 
 // used to generate all blockerboards for a blocker mask
 Bitboard gen_blockerboard(uint64_t index, Bitboard blockermask) {
+    std::cerr << "gen_blockerboard :: BEGIN\n" << std::endl;
     Bitboard blockerboard = blockermask;
     int bitindex = 0;
     for (int i = 0; i < blockermask.size(); i++) {
@@ -202,11 +207,13 @@ Bitboard gen_blockerboard(uint64_t index, Bitboard blockermask) {
             bitindex++;
         }
     }
+    std::cerr << "gen_blockerboard :: END\n" << std::endl;
     return blockerboard;
 }
 
 // used to generate moveboard for a square, blocker board, and piece
 Bitboard gen_moveboard(int sq, Bitboard blockerboard, int piece) {
+    std::cerr << "gen_moveboard :: BEGIN\n" << std::endl;
     Bitboard moveboard;
     int left_edge = int(sq / 8) * 8;
     int right_edge = left_edge + 7;
@@ -278,6 +285,7 @@ Bitboard gen_moveboard(int sq, Bitboard blockerboard, int piece) {
         }
     }
 
+    std::cerr << "gen_moveboard :: END\n" << std::endl;
     return moveboard;
 }
 
@@ -288,6 +296,7 @@ uint64_t get_index(int sq, int piece, Bitboard blockerboard) {
 
 // used to fill rook_db and bishop_db with every possible blocker board for every square
 void load_dbs(int piece) {
+    std::cerr << "load_dbs :: BEGIN\n" << std::endl;
     for (int sq = 0; sq < 64; sq++) {
         Bitboard mask = piece == pRook ? rook_masks[sq] : bishop_masks[sq];
         vector<Bitboard> db(pow(2, mask.count()));
@@ -300,10 +309,12 @@ void load_dbs(int piece) {
         }
         (piece == pRook ? rook_db : bishop_db)[sq] = db;
     }
+    std::cerr << "load_dbs :: END\n" << std::endl;
 }
 
 // used to fill pawn_dbW and pawn_dbB with all pawn moves at each square
 void load_pawns() {
+    std::cerr << "load_pawns :: BEGIN\n" << std::endl;
     for (int sq = 0; sq < 64; sq++) {
         Bitboard piece;
         piece.set(sq);
@@ -336,10 +347,12 @@ void load_pawns() {
         pawn_dbB[sq][2] = eatL_b | eatR_b;
         pawn_dbB[sq][3] = enPassL_b | enPassR_b;
     }
+    std::cerr << "load_pawns :: END\n" << std::endl;
 }
 
 // used to fill knigh_db with all knight moves at each square
 void load_knight() {
+    std::cerr << "load_knight :: BEGIN\n" << std::endl;
     for (int sq = 0; sq < 64; sq++) {
         Bitboard piece;
         piece.set(sq);
@@ -356,10 +369,12 @@ void load_knight() {
 
         knight_db[sq] = (u2_l1 | u2_r1 | d2_l1 | d2_r1 | u1_l2 | u1_r2 | d1_l2 | d1_r2);
     }
+    std::cerr << "load_knight :: END\n" << std::endl;
 }
 
 // used to fill king_db with all king moves at each square
 void load_king() {
+    std::cerr << "load_king :: BEGIN\n" << std::endl;
     for (int sq = 0; sq < 64; sq++) {
         Bitboard piece;
         piece.set(sq);
@@ -375,10 +390,12 @@ void load_king() {
 
         king_db[sq] = (u1 | d1 | l1 | r1 | u1_l1 | u1_r1 | d1_l1 | d1_r1);
     }
+    std::cerr << "load_king :: END\n" << std::endl;
 }
 
 // used to initialize all dbs
 void init_dbs() {
+    std::cerr << "init_dbs :: BEGIN\n" << std::endl;
     load_masks();
     load_shifts();
     load_dbs(pRook);
@@ -386,4 +403,5 @@ void init_dbs() {
     load_knight();
     load_king();
     load_pawns();
+    std::cerr << "init_dbs :: END\n" << std::endl;
 }
