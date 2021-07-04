@@ -21,7 +21,29 @@ file(GLOB SRC_FILES src/*.cpp)
 
 add_executable(
   chess
-  ${SRC_FILES}
+  src/board.cpp
+  src/eval.cpp
+  src/misc_funcs.cpp
+  src/move_generation.cpp
+  src/minimax.cpp
+  src/check_legal.cpp
+  src/set_attacking.cpp
+  src/BoardRenderer.cpp
+  src/main.cpp
+)
+
+add_executable(
+  chess_uci
+  src/board.cpp
+  src/eval.cpp
+  src/misc_funcs.cpp
+  src/move_generation.cpp
+  src/minimax.cpp
+  src/check_legal.cpp
+  src/set_attacking.cpp
+  src/BoardRenderer.cpp
+  src/UCI.cpp
+  src/main_uci.cpp
 )
 
 add_executable(

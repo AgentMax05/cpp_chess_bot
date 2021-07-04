@@ -2,6 +2,7 @@
 #include <vector>
 #include "UCI.h"
 #include "board.h"
+#include "set_attacking.h"
 
 using namespace std;
 
@@ -54,25 +55,11 @@ vector<string> UCI::run_command(string line) {
         return run_command_position(position_from_line(line));
     }
 
+    cerr << "Unrecognized command" << line << endl;
+    return output;
 }
 
-typedef struct {
-    char file;
-    int rank;
-} PGNPosition;
-
-typedef struct {
-    int piece;
-    PGNPosition from;
-    PGNPosition to;
-} PGNMove;
-
-typedef struct {
-    string fen;
-    vector<PGNMove> moves;
-} Position;
-
-Position position_from_line(string line) {
+Position UCI::position_from_line(string line) {
     // converts the line to a position
     Position pos;
     pos.fen = BoardConstants::DefaultFEN;
@@ -87,7 +74,13 @@ bool is_piece_white(int piece) {
     return false;
 }
 
-vector<std::string> run_command_position(Position position) {
+Move UCI::pgn_move_to_move(PGNMove pgnMove) {
+    Move move;
+    cerr << "TODO: implement pgn_move_to_move" << endl;
+    return move;
+}
+
+vector<std::string> UCI::run_command_position(Position position) {
     vector<string> output;
 
     // position [fen <fenstring> | startpos ]  moves <move1> .... <movei>
@@ -95,7 +88,7 @@ vector<std::string> run_command_position(Position position) {
     board.init_board(position.fen);
 
     set_attacking(board);
-    for(int i=0; i<position.moves.size; i++) {
+    for(int i=0; i<position.moves.size(); i++) {
         Move move = pgn_move_to_move(position.moves[i]);
         board.make_move(move.piece, move.move, is_piece_white(move.piece));
     }
