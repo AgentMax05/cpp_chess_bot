@@ -95,8 +95,8 @@ vector<vector<Bitboard>> rook_db(64);
 vector<vector<Bitboard>> bishop_db(64);
 vector<int> rook_shifts(64, 0);
 vector<int> bishop_shifts(64, 0);
-vector<vector<Bitboard>> pawn_dbW(64);
-vector<vector<Bitboard>> pawn_dbB(64);
+vector<vector<Bitboard>> pawn_dbW(64, vector<Bitboard>(4));
+vector<vector<Bitboard>> pawn_dbB(64, vector<Bitboard>(4));
 vector<Bitboard> knight_db(64);
 vector<Bitboard> king_db(64);
 
