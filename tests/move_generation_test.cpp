@@ -102,17 +102,17 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD2) {
   EXPECT_EQ(moves_test(1), 400);
 }
 
-TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
-  EXPECT_EQ(moves_test(2), 8902);
-}
+// TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
+//   EXPECT_EQ(moves_test(2), 8902);
+// }
 
-TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
-  EXPECT_EQ(moves_test(3), 197281);
-}
+// TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
+//   EXPECT_EQ(moves_test(3), 197281);
+// }
 
-TEST(MoveGenerationTest, CompareGeneratedMovesD5) {
-  EXPECT_EQ(moves_test(4), 4865609);
-}
+// TEST(MoveGenerationTest, CompareGeneratedMovesD5) {
+//   EXPECT_EQ(moves_test(4), 4865609);
+// }
 
 TEST(MoveGenerationTest, ListAllMovesWhite) {
     vector<Move> moves = generate_moves(get_board(), WHITE);
