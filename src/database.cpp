@@ -179,7 +179,7 @@ void load_masks() {
     }
 }
 
-// fill rook_shifts and bishop_shifts with >> value
+// fill rook_shifts and bishop_shifts with >> value (64 - bit count of blocker mask)
 void load_shifts() {
     for (int i = 0; i < rook_masks.size(); i++) {
         rook_shifts[i] = 64 - rook_masks[i].count();

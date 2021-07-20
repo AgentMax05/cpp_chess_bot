@@ -30,6 +30,7 @@ typedef std::bitset<64> Bitboard;
 using std::cout;
 using std::vector;
 
+// adds moves from a given square and bitboard of legal moves
 vector<Move> add_move_board(int sq, Bitboard move_board, int piece, int type= REGULAR_MOVE) {
     vector<Move> moves = {};
     for (int i = 0; i < move_board.size(); i++) {
@@ -164,13 +165,22 @@ void generate_moves_for_queen(vector<Move>* moves, Board board, bool White) {
 }
 
 void generate_castles(vector<Move>* moves, Board board, bool White) {
-    if (White) {
+    /*
+        Requirements for castling:
+        1. King and rook have not previously moved
+        2. King cannot move through check
+        3. King cannot be in check
+        4. King does not end up in check (as for any other move, checked in minimax.cpp)
+        5. No pieces between the king and the rook
+    */
+    
+    if (White && (board.kingW & board.attackB).none()) {
         if (board.lCastleW) {
             if ((board.complete_board & board.lCastleWBoard).none()) {
                 if ((board.attackB & board.lCastleWBoard).none()) {
                     Move new_move;
                     new_move.type = L_CASTLE;
-                    new_move.piece = pRook;
+                    new_move.piece = pNone;
                     moves->push_back(new_move);
                 }
             }
@@ -180,18 +190,18 @@ void generate_castles(vector<Move>* moves, Board board, bool White) {
                 if ((board.attackB & board.rCastleWBoard).none()) {
                     Move new_move;
                     new_move.type = R_CASTLE;
-                    new_move.piece = pRook;
+                    new_move.piece = pNone;
                     moves->push_back(new_move);
                 }
             }
         }
-    } else {
+    } else if ((board.kingB & board.attackW).none()) {
         if (board.lCastleB) {
             if ((board.complete_board & board.lCastleBBoard).none()) {
                 if ((board.attackW & board.lCastleBBoard).none()) {
                     Move new_move;
                     new_move.type = L_CASTLE;
-                    new_move.piece = pRook;
+                    new_move.piece = pNone;
                     moves->push_back(new_move);
                 }
             }
@@ -201,7 +211,7 @@ void generate_castles(vector<Move>* moves, Board board, bool White) {
                 if ((board.attackW & board.rCastleBBoard).none()) {
                     Move new_move;
                     new_move.type = R_CASTLE;
-                    new_move.piece = pRook;
+                    new_move.piece = pNone;
                     moves->push_back(new_move);
                 }
             }
