@@ -25,13 +25,45 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
         return beta;
     }
 
+    // set castling bool to false if rook is moved
+    if (move.piece == pRook) {
+        if (White) {
+            if (board.rookW[56] != 1 && board.lCastleW == true) {board.lCastleW = false;}
+            if (board.rookW[63] != 1 && board.rCastleW == true) {board.rCastleW = false;}
+        } else {
+            if (board.rookB[0] != 1 && board.lCastleB == true) {board.lCastleB = false;}
+            if (board.rookB[7] != 1 && board.rCastleB == true) {board.rCastleB = false;}
+        }
+    }
+
+    // set castling bools to false if king is moved
+    else if (move.piece == pKing) {
+        if (White) {
+            board.lCastleW = false;
+            board.rCastleW = false;
+        } else {
+            board.lCastleB = false;
+            board.rCastleB = false;
+        }
+    }
+
+    // set castling bools to false if current move is a castle
+    else if (move.piece == pNone && (move.type == L_CASTLE || move.type == R_CASTLE)) {
+        if (White) {
+            board.lCastleW = false;
+            board.rCastleW = false;
+        } else {
+            board.lCastleB = false;
+            board.rCastleB = false;
+        }
+    }
+
     if (depth <= 0) {
         return value_board(board);
     }
 
     // generate moves for other side (White == false)
     vector<Move> moves = generate_moves(board, White == false);
-    filter_moves(board, moves, White == false);
 
     // check if king is in checkmate or stalemate
     if (moves.size() == 0) {
@@ -91,8 +123,8 @@ double minimax(Board board, Move move, bool White, int depth, double alpha, doub
 
 
 Move best_move(Board board, bool White, int depth) {
+    set_attacking(board);
     vector<Move> moves = generate_moves(board, White);
-    filter_moves(board, moves, White);
 
     nodes = 0;
 

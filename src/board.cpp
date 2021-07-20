@@ -3,16 +3,11 @@
 #include <bitset>
 #include <sstream>
 #include "board.h"
+#include "move_generation.h"
+#include "database.h"
 
 typedef std::bitset<64> Bitboard;
 using namespace std;
-
-const int pKing = 0;
-const int pQueen = 1;
-const int pRook = 2;
-const int pKnight = 3;
-const int pBishop = 4;
-const int pPawn = 5;
 
 bool is_lowercase(char input);
 bool is_num(char input);
@@ -25,8 +20,31 @@ void Board::update_boards() {
     Board::complete_board = Board::boardW | Board::boardB;
 }
 
-void Board::make_move(int piece, Bitboard move, bool White) {
+void Board::update_epPawns() {
+    Board::epPawns = Board::pawnW | Board::pawnB;
+}
+
+void Board::make_move(int piece, Bitboard move, bool White, int type /*= 0*/) {
+    update_epPawns();
     if (White) {
+
+        // make castling move
+        if (piece == pNone  && type == L_CASTLE) {
+            Board::kingW = Board::kingW ^ Board::lCastleWMove[0];
+            Board::rookW = Board::rookW ^ Board::lCastleWMove[1];
+        }
+
+        else if (piece == pNone && type == R_CASTLE) {
+            Board::kingW = Board::kingW ^ Board::rCastleWMove[0];
+            Board::rookW = Board::rookW ^ Board::rCastleWMove[1];
+        }
+
+        // make en passant move
+        if (piece == pPawn && type == PAWN_ENPASSANT) {
+            Bitboard bPawn = (move ^ Board::pawnW) << 8;
+            Board::pawnB = Board::pawnB ^ bPawn;
+            Board::pawnW = Board::pawnW ^ move;
+        }
 
         // checks if a piece is being eaten
         if (!(move & Board::boardB).none()) {
@@ -47,6 +65,24 @@ void Board::make_move(int piece, Bitboard move, bool White) {
         else if (piece == pQueen) {Board::queenW = Board::queenW ^ move;}
         else if (piece == pKing) {Board::kingW = Board::kingW ^ move;}
     } else {
+
+        // make castling move
+        if (piece == pNone && type == L_CASTLE) {
+            Board::kingB = Board::kingB ^ Board::lCastleBMove[0];
+            Board::rookB = Board::rookB ^ Board::lCastleBMove[1];
+        }
+
+        else if (piece == pNone && type == R_CASTLE) {
+            Board::kingB = Board::kingB ^ Board::rCastleBMove[0];
+            Board::rookB = Board::rookB ^ Board::rCastleBMove[1];
+        }
+
+        // make en passant move
+        if (piece == pPawn && type == PAWN_ENPASSANT) {
+            Bitboard wPawn = (move ^ Board::pawnB) >> 8;
+            Board::pawnW = Board::pawnW ^ wPawn;
+            Board::pawnB = Board::pawnB ^ move;
+        }
 
         // checks if a piece is being eaten
         if (!(move & Board::boardW).none()) {
@@ -71,6 +107,7 @@ void Board::make_move(int piece, Bitboard move, bool White) {
 }
 
 void Board::init_board(string FEN) {
+    init_dbs();
 
     string current = "";
     std::vector<string> fen_notation1 = {};
@@ -160,11 +197,16 @@ void Board::init_board(string FEN) {
                     Board::kingW[board_space] = 1;
                 }
             }
-
         }
     }
 
     update_boards();
+
+    // init castling bools
+    if (rookW[56] == 1) {lCastleW = true;}
+    if (rookW[63] == 1) {rCastleW = true;}
+    if (rookB[0] == 1) {lCastleB = true;}
+    if (rookB[7] == 1) {rCastleB = true;}
 }
 
 string move_to_string(Move* move) {

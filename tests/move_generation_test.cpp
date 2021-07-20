@@ -6,6 +6,7 @@
 #include "eval.h"
 #include "check_legal.h"
 #include "set_attacking.h"
+#include "database.h"
 
 #include <vector>
 
@@ -28,7 +29,7 @@ const string PATH_SEPARATOR = "/";
 TEST(MoveGenerationTest, CountGeneratedMoves) {
   vector<Move> moves = generate_moves(get_board(), WHITE);
   size_t count = moves.size();
-  EXPECT_EQ(count, 104);
+  EXPECT_EQ(count, 20);
 }
 
 Board copy(Board board) {
@@ -37,7 +38,6 @@ Board copy(Board board) {
 
 int possible_moves(Board board, bool isWhite, int depth) {
   vector<Move> moves = generate_moves(board, isWhite);
-  filter_moves(board, moves, isWhite);
 
   if (depth == 0) {
 
@@ -80,7 +80,6 @@ int moves_test(int depth) {
   Board board;
   board.init_board(BoardConstants::DefaultFEN);
   set_attacking(board);
-
   return possible_moves(board, true, depth);
 }
 
@@ -109,6 +108,10 @@ TEST(MoveGenerationTest, CompareGeneratedMovesD3) {
 
 TEST(MoveGenerationTest, CompareGeneratedMovesD4) {
   EXPECT_EQ(moves_test(3), 197281);
+}
+
+TEST(MoveGenerationTest, CompareGeneratedMovesD5) {
+  EXPECT_EQ(moves_test(4), 4865609);
 }
 
 TEST(MoveGenerationTest, ListAllMovesWhite) {
