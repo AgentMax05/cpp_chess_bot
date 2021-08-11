@@ -3,6 +3,7 @@
 #include "UCI.h"
 #include "board.h"
 #include "set_attacking.h"
+#include "move_generation.h"
 
 using namespace std;
 
@@ -74,9 +75,43 @@ bool is_piece_white(int piece) {
     return false;
 }
 
+/*
+ *  Bitboard Numbering:
+ *  RANK | LBIT    -    RBIT
+ *    8     0 > 00000000 <7
+ *    7     8 > 00000000 <15
+ *    6     16> 00000000 <23
+ *    5     24> 00000000 <31
+ *    4     32> 00000000 <39
+ *    3     40> 00000000 <47
+ *    2     48> 00000000 <55
+ *    1     56> 00000000 <63
+ *    FILE      ABCDEFGH
+ * 
+ *  Right shift (>>) moves pieces up
+ *  Left shift (<<) moves pieces down
+*/
+
+int UCI::pgn_position_to_bitboard_index(PGNPosition position) {
+    int column = position.file - 65; // A-H
+    int row = 8 - position.rank;
+
+    return row * 8 + column;
+}
+
 Move UCI::pgn_move_to_move(PGNMove pgnMove) {
+    Bitboard move_board;
+    Bitboard legal_check;
+    int piece = pgnMove.piece;
     Move move;
-    cerr << "TODO: implement pgn_move_to_move" << endl;
+    move.piece = piece;
+    move.type = REGULAR_MOVE;
+    int to = pgn_position_to_bitboard_index(pgnMove.to);
+    int from = pgn_position_to_bitboard_index(pgnMove.from);
+    move_board[to] = 1;
+    move_board[from] = 1;
+    move.move = move_board;
+    move.legal_check = legal_check;
     return move;
 }
 

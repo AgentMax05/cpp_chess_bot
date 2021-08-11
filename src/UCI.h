@@ -21,7 +21,10 @@ typedef struct {
 class UCI {
     public:
     void run();
+    std::vector<std::string> run_command_position(Position position);
     std::vector<std::string> run_command(std::string line);
+    int pgn_position_to_bitboard_index(PGNPosition position);
+    Move pgn_move_to_move(PGNMove move);
     private:
     bool started = false;
     bool quit = false;
@@ -29,6 +32,4 @@ class UCI {
     bool new_game = false;
     Board board;
     Position position_from_line(string line);
-    std::vector<std::string> run_command_position(Position position);
-    Move pgn_move_to_move(PGNMove move);
 };
